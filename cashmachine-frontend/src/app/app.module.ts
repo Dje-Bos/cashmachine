@@ -12,13 +12,19 @@ import {
 } from 'ng-gapi';
 import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
-import {HttpClientModule} from '@angular/common/http';
-import {UserService} from './service/user-service.service';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {AuthService} from './service/auth-service.service';
 import { LoginComponent } from './login/login.component';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import {AuthGuard} from './auth/auth.guard';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {JwtInterceptor} from './interceptor/jwt.interceptor';
+import {TokenExpirationInterceptor} from './interceptor/token-expiration.interceptor';
+import {MatButtonModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatInputModule} from '@angular/material';
+import { OrdersComponent } from './orders/orders.component';
 
 const gapiClientConfig: NgGapiClientConfig = {
   client_id: '543468181862-jlb9u7fci0600tasvg44vjjj8toqteu0.apps.googleusercontent.com',
@@ -31,7 +37,6 @@ const gapiClientConfig: NgGapiClientConfig = {
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent },
-  // { path: 'hero/:id',      component: HeroDetailComponent },
   {
     path: 'home',
     component: HomeComponent,
@@ -50,7 +55,8 @@ const appRoutes: Routes = [
     AppComponent,
     LoginComponent,
     HomeComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    OrdersComponent
   ],
   imports: [
     BrowserModule,
@@ -62,15 +68,33 @@ const appRoutes: Routes = [
     }]),
     RouterModule.forRoot(
       appRoutes,
-      { enableTracing: true } // <-- debugging purposes only
+      {enableTracing: true} // <-- debugging purposes only
     ),
     HttpClientModule,
     GoogleApiModule.forRoot({
       provide: NG_GAPI_CONFIG,
       useValue: gapiClientConfig
     }),
+    MatProgressBarModule,
+    BrowserAnimationsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatDividerModule
   ],
-  providers: [UserService],
+  providers: [AuthService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenExpirationInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

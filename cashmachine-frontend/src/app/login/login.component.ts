@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {UserService} from '../service/user-service.service';
+import {AuthService} from '../service/auth-service.service';
+import {DomSanitizer} from '@angular/platform-browser';
+import {MatIconRegistry} from '@angular/material';
 
 @Component({
   selector: 'app-login',
@@ -8,7 +10,11 @@ import {UserService} from '../service/user-service.service';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: AuthService, iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
+    iconRegistry.addSvgIcon(
+      'google-icon',
+      sanitizer.bypassSecurityTrustResourceUrl('assets/google-icon.svg'));
+  }
 
   public isLoggedIn(): boolean {
     return this.userService.isUserSignedIn();

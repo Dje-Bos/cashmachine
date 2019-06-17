@@ -1,0 +1,27 @@
+.login-form {
+  width: 100%;
+}
+
+.login-full-width {
+  width: 100%;
+}
+
+.mat-icon{
+  height:54px !important;
+  width:54px !important;
+  font-size:54px !important;
+}
+
+.google-login-wrapper {
+  min-height: 54px;
+  margin-top: 10px;
+}
+
+.login-separator {
+  margin-top: 10px;
+}
+
+.divider {
+  margin-left: -15px;
+  margin-right: 15px;
+}
