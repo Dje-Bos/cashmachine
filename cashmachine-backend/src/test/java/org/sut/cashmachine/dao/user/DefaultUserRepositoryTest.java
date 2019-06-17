@@ -19,6 +19,7 @@ import org.sut.cashmachine.model.order.ReceiptEntryModel;
 import org.sut.cashmachine.model.order.ReceiptModel;
 import org.sut.cashmachine.model.order.ReceiptModelPK;
 import org.sut.cashmachine.model.product.ProductModel;
+import org.sut.cashmachine.model.user.AuthType;
 import org.sut.cashmachine.model.user.UserModel;
 
 import java.math.BigDecimal;
@@ -57,10 +58,9 @@ public class DefaultUserRepositoryTest {
         assertNotNull(product.getId());
 
         UserModel userModel = new UserModel();
-        userModel.setEmail("zatovw");
-        userModel.setLastName("zatovw");
-        userModel.setNickName("zatovw");
-        userModel.setFirstName("zatovw");
+        userModel.setEmail("zatovw@gmail.com");
+        userModel.setName("zatovw");
+        userModel.setAuth(AuthType.GOOGLE);
 
         userRepository.save(userModel);
         assertNotNull(userModel.getId());
