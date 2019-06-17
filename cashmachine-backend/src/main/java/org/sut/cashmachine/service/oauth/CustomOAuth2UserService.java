@@ -9,12 +9,22 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.sut.cashmachine.dao.user.UserRepository;
+import org.sut.cashmachine.dao.user.UserRolesRepository;
+import org.sut.cashmachine.dataload.test.data.RoleTestData;
+import org.sut.cashmachine.dataload.test.loader.TestDataLoader;
 import org.sut.cashmachine.exception.OAuth2AuthenticationProcessingException;
 import org.sut.cashmachine.model.user.AuthType;
+import org.sut.cashmachine.model.user.RoleModel;
 import org.sut.cashmachine.model.user.UserModel;
 import org.sut.cashmachine.rest.dto.OAuth2UserInfo;
 import org.sut.cashmachine.security.UserPrincipal;
 import org.sut.cashmachine.util.StringUtil;
+
+import javax.annotation.PostConstruct;
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
@@ -22,7 +32,14 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserRolesRepository userRolesRepository;
+
+    @Autowired
+    private EntityManager entityManager;
+
     @Override
+    @Transactional
     public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = super.loadUser(oAuth2UserRequest);
 
@@ -63,7 +80,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         user.setAuth(AuthType.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId().toUpperCase()));
         user.setName(oAuth2UserInfo.getName());
         user.setEmail(oAuth2UserInfo.getEmail());
-//        user.setImageUrl(oAuth2UserInfo.getImageUrl());
+
+        RoleModel role = entityManager.merge(RoleTestData.CASHIER_ROLE);
+        user.setRoles(Set.of(role));
+        //        user.setImageUrl(oAuth2UserInfo.getImageUrl());
         return userRepository.save(user);
     }
 
