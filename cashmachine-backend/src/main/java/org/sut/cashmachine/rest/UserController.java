@@ -1,10 +1,14 @@
 package org.sut.cashmachine.rest;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.sut.cashmachine.dao.user.UserRepository;
 import org.sut.cashmachine.dao.user.UserRolesRepository;
+import org.sut.cashmachine.exception.ResourceNotFoundException;
 import org.sut.cashmachine.model.user.RoleModel;
 import org.sut.cashmachine.model.user.UserModel;
+import org.sut.cashmachine.security.CurrentUser;
+import org.sut.cashmachine.security.UserPrincipal;
 
 import javax.annotation.Resource;
 
@@ -34,4 +38,11 @@ public class UserController {
     }
 
 
+    @GetMapping("/user/me")
+    @PreAuthorize("hasRole('USER')")
+    public UserModel getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
+        return userRepository.findById(userPrincipal.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userPrincipal.getId()));
+    }
 }
+

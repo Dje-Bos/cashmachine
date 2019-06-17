@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.sut.cashmachine.dao.user.UserRepository;
 import org.sut.cashmachine.model.user.UserModel;
-import org.sut.cashmachine.security.DefaultUserDetails;
+import org.sut.cashmachine.security.UserPrincipal;
 
 @Service
 public class DefaultUserDetailsService implements UserDetailsService {
@@ -21,11 +21,20 @@ public class DefaultUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserModel user = userRepository.getUserByEmail(username);
+        return validateAndReturn(user, username);
+    }
+
+    public UserDetails loadUserById(long id) {
+        UserModel userModel = userRepository.getUserById(id);
+        return validateAndReturn(userModel, id);
+    }
+
+    private UserDetails validateAndReturn(UserModel user, Object param) {
         if (user == null) {
-            throw new UsernameNotFoundException(username);
+            throw new UsernameNotFoundException(param.toString());
         }
         else {
-            return DefaultUserDetails.of(user);
+            return UserPrincipal.create(user);
         }
     }
 }

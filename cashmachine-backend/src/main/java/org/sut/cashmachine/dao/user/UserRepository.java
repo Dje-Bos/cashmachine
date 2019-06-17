@@ -9,8 +9,7 @@ public interface UserRepository extends CrudRepository<UserModel, Long> {
 
     UserModel getUserByEmail(String email);
 
-    UserModel getUserByNickName(String nickname);
-
     boolean removeUserByEmail(String email);
 
+    UserModel getUserById(long id);
 }

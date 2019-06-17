@@ -12,10 +12,9 @@ CREATE TABLE users
     id            BIGINT AUTO_INCREMENT PRIMARY KEY,
     creation_time TIMESTAMP   NOT NULL,
     email         VARCHAR(25) NOT NULL UNIQUE,
-    first_name    VARCHAR(25),
-    last_name     VARCHAR(25),
+    name          VARCHAR(25),
+    auth          VARCHAR(25) NOT NULL,
     password      VARCHAR(25),
-    nickname      VARCHAR(20) UNIQUE,
     is_active     BOOLEAN     NOT NULL
 );
 

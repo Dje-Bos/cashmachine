@@ -1,6 +1,7 @@
 package org.sut.cashmachine.model.user;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.Set;
@@ -14,17 +15,17 @@ public class UserModel implements Serializable {
     @Id
     private Long id;
 
-    @Column(name = "nickname",unique = true)
-    private String nickName;
-
-    @Column(name = "first_name")
-    private String firstName;
-    @Column(name = "last_name")
-    private String lastName;
+    @Column(name = "name")
+    private String name;
 
     @Column(name = "password")
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "auth")
+    private AuthType auth;
+
+    @Email
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
@@ -39,10 +40,11 @@ public class UserModel implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private Set<RoleModel> roles;
 
-    public UserModel(String nickName, String email, Boolean isActive) {
-        this.nickName = nickName;
+    public UserModel(String name, String email, Boolean isActive) {
+        this.name = name;
         this.email = email;
         this.isActive = isActive;
+        this.auth = AuthType.BASIC;
     }
 
     public UserModel(String email, Set<RoleModel> roles) {
@@ -55,15 +57,14 @@ public class UserModel implements Serializable {
         this.password = password;
     }
 
-    public UserModel(String nickName, String firstName, String lastName, String email, OffsetDateTime creationTime, Boolean isActive, Set<RoleModel> roles, String password) {
-        this.nickName = nickName;
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public UserModel(String name, String password, AuthType auth, @Email String email, OffsetDateTime creationTime, Boolean isActive, Set<RoleModel> roles) {
+        this.name = name;
+        this.password = password;
+        this.auth = auth;
         this.email = email;
         this.creationTime = creationTime;
         this.isActive = isActive;
         this.roles = roles;
-        this.password = password;
     }
 
     public UserModel() {
@@ -87,28 +88,20 @@ public class UserModel implements Serializable {
         this.id = id;
     }
 
-    public String getNickName() {
-        return nickName;
+    public String getName() {
+        return name;
     }
 
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public AuthType getAuth() {
+        return auth;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setAuth(AuthType auth) {
+        this.auth = auth;
     }
 
     public String getEmail() {
