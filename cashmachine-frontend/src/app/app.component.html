@@ -1,7 +1,11 @@
 <mat-progress-bar
   *ngIf="loading" color="accent" mode="indeterminate">
 </mat-progress-bar>
-<div class="container-fluid align-content-center justify-content-center row"><span>Welcome to cashmachine!</span></div>
+<app-header></app-header>
+<div class="container-fluid align-content-center justify-content-center row">
+  <h2>Welcome to cashmachine!</h2>
+</div>
 <router-outlet></router-outlet>
+<app-footer></app-footer>
 
 

@@ -23,8 +23,18 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {JwtInterceptor} from './interceptor/jwt.interceptor';
 import {TokenExpirationInterceptor} from './interceptor/token-expiration.interceptor';
-import {MatButtonModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatInputModule} from '@angular/material';
+import {
+  MatButtonModule,
+  MatDividerModule,
+  MatFormFieldModule,
+  MatIconModule,
+  MatInputModule,
+  MatPaginatorModule,
+  MatProgressSpinnerModule, MatSortModule, MatTableModule
+} from '@angular/material';
 import { OrdersComponent } from './orders/orders.component';
+import { HeaderComponent } from './header/header.component';
+import { FooterComponent } from './footer/footer.component';
 
 const gapiClientConfig: NgGapiClientConfig = {
   client_id: '543468181862-jlb9u7fci0600tasvg44vjjj8toqteu0.apps.googleusercontent.com',
@@ -41,10 +51,10 @@ const appRoutes: Routes = [
     path: 'home',
     component: HomeComponent,
     canActivate: [AuthGuard],
-    data: { title: 'Heroes List' }
+    data: { roles: ['cashier', 'admin'] }
   },
   { path: '',
-    redirectTo: '/home',
+    redirectTo: '/orders',
     pathMatch: 'full'
   },
   { path: '**', component:  PageNotFoundComponent}
@@ -56,7 +66,9 @@ const appRoutes: Routes = [
     LoginComponent,
     HomeComponent,
     PageNotFoundComponent,
-    OrdersComponent
+    OrdersComponent,
+    HeaderComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
@@ -81,7 +93,11 @@ const appRoutes: Routes = [
     MatInputModule,
     MatButtonModule,
     MatIconModule,
-    MatDividerModule
+    MatDividerModule,
+    MatPaginatorModule,
+    MatProgressSpinnerModule,
+    MatTableModule,
+    MatSortModule
   ],
   providers: [AuthService,
     {

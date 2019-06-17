@@ -21,8 +21,10 @@ export class OrdersComponent implements AfterViewInit {
   resultsLength = 0;
   isLoadingResults = true;
 
-  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
-  @ViewChild(MatSort, {static: false}) sort: MatSort;
+  @ViewChild(MatPaginator, {static: false})
+  paginator: MatPaginator;
+  @ViewChild(MatSort, {static: false})
+  sort: MatSort;
 
   constructor(private _httpClient: HttpClient) {}
 
