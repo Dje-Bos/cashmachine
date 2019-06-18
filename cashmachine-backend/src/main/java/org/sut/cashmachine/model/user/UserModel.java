@@ -35,6 +35,9 @@ public class UserModel implements Serializable {
     @Column(name = "is_active")
     private Boolean isActive;
 
+    @Column(name = "picture_url")
+    private String pictureUrl;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
@@ -57,13 +60,22 @@ public class UserModel implements Serializable {
         this.password = password;
     }
 
-    public UserModel(String name, String password, AuthType auth, @Email String email, OffsetDateTime creationTime, Boolean isActive, Set<RoleModel> roles) {
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
+    }
+
+    public UserModel(String name, String password, AuthType auth, @Email String email, OffsetDateTime creationTime, Boolean isActive, String pictureUrl, Set<RoleModel> roles) {
         this.name = name;
         this.password = password;
         this.auth = auth;
         this.email = email;
         this.creationTime = creationTime;
         this.isActive = isActive;
+        this.pictureUrl = pictureUrl;
         this.roles = roles;
     }
 
