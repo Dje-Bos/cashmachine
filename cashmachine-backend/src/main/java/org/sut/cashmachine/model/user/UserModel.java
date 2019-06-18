@@ -1,10 +1,14 @@
 package org.sut.cashmachine.model.user;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "users")
@@ -136,6 +140,11 @@ public class UserModel implements Serializable {
         return roles;
     }
 
+    @JsonGetter(value = "roles")
+    public Set<String> getStringRoles() {
+        return roles.stream().map(RoleModel::getAuthority).collect(Collectors.toSet());
+    }
+
     public void setRoles(Set<RoleModel> roles) {
         this.roles = roles;
     }
@@ -148,6 +157,7 @@ public class UserModel implements Serializable {
         isActive = active;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
