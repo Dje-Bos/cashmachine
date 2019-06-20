@@ -20,10 +20,6 @@ export class LoginComponent implements OnInit {
     return this.userService.isUserSignedIn();
   }
 
-
-  public signIn() {
-    this.userService.signIn();
-  }
   ngOnInit() {
   }
 
