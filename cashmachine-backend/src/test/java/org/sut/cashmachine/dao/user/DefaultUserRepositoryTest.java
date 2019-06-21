@@ -7,10 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 import org.sut.cashmachine.dao.receipt.ReceiptEntryRepository;
 import org.sut.cashmachine.dao.receipt.DataJpaReceiptRepository;
-import org.sut.cashmachine.dao.product.ProductRepository;
+import org.sut.cashmachine.dao.product.DataJpaProductRepository;
 import org.sut.cashmachine.dataload.test.data.ProductTestData;
 import org.sut.cashmachine.dataload.test.data.ReceiptTestData;
 import org.sut.cashmachine.dataload.test.data.UserTestData;
@@ -35,7 +34,7 @@ public class DefaultUserRepositoryTest {
     private DataJpaUserRepository dataJpaUserRepository;
 
     @Autowired
-    private ProductRepository productRepository;
+    private DataJpaProductRepository productRepository;
 
     @Autowired
     private ReceiptEntryRepository receiptEntryRepository;

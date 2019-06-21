@@ -68,7 +68,7 @@ CREATE TABLE receipts
     id            BIGINT AUTO_INCREMENT PRIMARY KEY,
     creation_time TIMESTAMP NOT NULL,
     cashier_id    BIGINT    NOT NULL,
-    total         DECIMAL,
+    total         DECIMAL NOT NULL DEFAULT 0,
     status        VARCHAR(25),
     CONSTRAINT cashier_id_fk FOREIGN KEY (cashier_id) REFERENCES users (id)
 );
