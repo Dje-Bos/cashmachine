@@ -1,0 +1,10 @@
+<mat-menu #appMenu="matMenu">
+  <ng-template matMenuContent class="h-25">
+    <button mat-menu-item>Details</button>
+    <button mat-menu-item (click)="logout()">Logout</button>
+  </ng-template>
+</mat-menu>
+
+<button mat-icon-button [matMenuTriggerFor]="appMenu">
+  <img class="img-fluid" [src]="pictureUrl" alt="profile">
+</button>

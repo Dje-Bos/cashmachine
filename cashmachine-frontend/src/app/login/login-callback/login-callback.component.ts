@@ -10,14 +10,14 @@ import {RedirectService} from '../service/redirect.service';
 })
 export class LoginCallbackComponent implements OnInit {
 
-  constructor(private homePageService: RedirectService, private authService: AuthService, private route: ActivatedRoute, private router: Router) {
+  constructor(private redirectService: RedirectService, private authService: AuthService, private route: ActivatedRoute, private router: Router) {
   }
 
   ngOnInit() {
     if (this.route.snapshot.queryParamMap.get('token')) {
       this.authService.loginWithToken(this.route.snapshot.queryParamMap.get('token')).subscribe((result: boolean) => {
         if (result) {
-          this.homePageService.redirectUserToHomePage(this.authService.getUser(), this.authService.redirectUri);
+          this.redirectService.redirectUserToHomePage(this.authService.getUser(), this.authService.redirectUri);
         } else {
           this.logoutAndNavigateToLogin();
         }

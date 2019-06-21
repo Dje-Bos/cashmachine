@@ -5,7 +5,6 @@ import {AppComponent} from './app.component';
 import {FormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
-import {HomeComponent} from './home/home.component';
 import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -26,18 +25,14 @@ import {LoginRoutingModule} from './login/login-routing.module';
 import {OrderModule} from './order/order.module';
 import {JwtInterceptor} from './interceptor/jwt.interceptor';
 import {TokenExpirationInterceptor} from './interceptor/token-expiration.interceptor';
-import { HfModule } from './hf/hf/hf.module';
-import { StubComponent } from './stub/stub/stub.component';
-import {AuthService} from './login/service/auth-service.service';
-import { HeaderProfileComponent } from './header-profile/header-profile/header-profile.component';
+import {HfModule} from './hf/hf/hf.module';
+import {StubComponent} from './stub/stub/stub.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
     PageNotFoundComponent,
-    StubComponent,
-    HeaderProfileComponent,
+    StubComponent
   ],
   imports: [
     BrowserModule,
@@ -60,8 +55,6 @@ import { HeaderProfileComponent } from './header-profile/header-profile/header-p
     OrderModule,
     AppRoutingModule,
     HfModule
-  ],
-  exports: [
   ],
   providers : [{
     provide: HTTP_INTERCEPTORS,

@@ -1,0 +1,51 @@
+<div *ngIf="createdOrder">
+  <div class="container">
+    <div class="row p-3">
+      <h3>Order creation #{{this.createdOrder.id}} Total is {{this.createdOrder.total}}</h3>
+    </div>
+  </div>
+  <div class="container">
+    <form class="form-inline" [formGroup]="productSearchForm">
+      <mat-form-field>
+        <input formControlName="code" (focusin)="setFocusOnSearch(true)" matInput placeholder="Search for product here">
+      </mat-form-field>
+      <button type="submit" hidden>hidden submit</button>
+    </form>
+    <div class="position-absolute bg-white col-2" *ngIf="this.focusOnSearch">
+      <div *ngFor="let product of suggestedProducts" (click)="addProductToOrder(product.code)"
+           class="border-bottom border-top">
+        <p class="row justify-content-around hoverable h-100" (focusin)="setFocusOnSearch(true)">
+          <span>{{product.name}}</span>
+          <span>{{product.code}}</span>
+        </p>
+      </div>
+    </div>
+  </div>
+  <mat-list role="list" class="container align-content-start p-3">
+    <div class="row justify-content-around bg-primary">
+      <div class="col text-center border-right border-left text-white">#</div>
+      <div class="col text-center border-right border-left text-white">Product Name</div>
+      <div class="col text-center border-right border-left text-white">Quantity</div>
+      <div class="col text-center border-right border-left text-white">Price</div>
+    </div>
+    <mat-list-item *ngFor="let entry of entries; let i = index" role="listitem" class="row justify-content-around">
+      <div class="col text-left border-right">{{entry.no}}</div>
+      <div class="col text-left border-right border-left">{{entry.productName}}</div>
+      <div *ngIf="i+1 != entries.length" class="col text-left border-right border-left">{{entry.quantity}}</div>
+      <div *ngIf="i+1 == entries.length" class="col text-left border-right border-left">
+        <form class="" (ngSubmit)="onQuantitySubmit()" [formGroup]="entryForm">
+          <input formControlName="quantity" placeholder="Quantity" value="{{entry.quantity}}" autofocus/>
+          <input formControlName="index" hidden value="{{i}}"/>
+          <button type="submit" hidden>hidden submit</button>
+        </form>
+      </div>
+      <div class="col text-left border-left">{{entry.price}}</div>
+    </mat-list-item>
+  </mat-list>
+  <div class="container ">
+    <div class="row justify-content-end">
+      <button mat-raised-button color="primary" (click)="finishOrderCreation()">Finish</button>
+      <button mat-raised-button color="secondary" (click)="finishOrderCreationAndStartNew()">Finish and Create New</button>
+    </div>
+  </div>
+</div>
