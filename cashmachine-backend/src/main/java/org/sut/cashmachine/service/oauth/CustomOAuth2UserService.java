@@ -8,10 +8,10 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.sut.cashmachine.dao.user.DataJpaUserRepository;
 import org.sut.cashmachine.dao.user.UserRepository;
 import org.sut.cashmachine.dao.user.UserRolesRepository;
 import org.sut.cashmachine.dataload.test.data.RoleTestData;
-import org.sut.cashmachine.dataload.test.loader.TestDataLoader;
 import org.sut.cashmachine.exception.OAuth2AuthenticationProcessingException;
 import org.sut.cashmachine.model.user.AuthType;
 import org.sut.cashmachine.model.user.RoleModel;
@@ -20,10 +20,8 @@ import org.sut.cashmachine.rest.dto.OAuth2UserInfo;
 import org.sut.cashmachine.security.UserPrincipal;
 import org.sut.cashmachine.util.StringUtil;
 
-import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
-import java.util.List;
 import java.util.Set;
 
 @Service
@@ -31,9 +29,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private UserRolesRepository userRolesRepository;
 
     @Autowired
     private EntityManager entityManager;
@@ -83,8 +78,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         user.setEmail(oAuth2UserInfo.getEmail());
         user.setPictureUrl(oAuth2UserInfo.getImageUrl());
 
-        RoleModel role = entityManager.merge(RoleTestData.CASHIER_ROLE);
-        user.setRoles(Set.of(role));
+        user.setRoles(Set.of(RoleTestData.CASHIER_ROLE));
         //        user.setImageUrl(oAuth2UserInfo.getImageUrl());
         return userRepository.save(user);
     }

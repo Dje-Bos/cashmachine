@@ -14,7 +14,7 @@ CREATE TABLE users
     email         VARCHAR(25) NOT NULL UNIQUE,
     name          VARCHAR(50),
     auth          VARCHAR(25) NOT NULL,
-    password      VARCHAR(25),
+    password      VARCHAR(150),
     picture_url   VARCHAR(255),
     is_active     BOOLEAN     NOT NULL
 );

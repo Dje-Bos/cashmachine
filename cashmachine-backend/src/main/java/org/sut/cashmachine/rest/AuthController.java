@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.sut.cashmachine.dao.user.DataJpaUserRepository;
 import org.sut.cashmachine.dao.user.UserRepository;
+import org.sut.cashmachine.dataload.test.data.RoleTestData;
 import org.sut.cashmachine.exception.BadRequestException;
 import org.sut.cashmachine.model.user.AuthType;
 import org.sut.cashmachine.model.user.UserModel;
@@ -24,7 +26,7 @@ import org.sut.cashmachine.service.oauth.TokenProvider;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.security.AuthProvider;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/auth")
@@ -69,6 +71,7 @@ public class AuthController {
         user.setName(signUpRequest.getName());
         user.setEmail(signUpRequest.getEmail());
         user.setPassword(signUpRequest.getPassword());
+        user.setRoles(Set.of(RoleTestData.CASHIER_ROLE));
         user.setAuth(AuthType.BASIC);
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -80,7 +83,7 @@ public class AuthController {
                 .buildAndExpand(result.getId()).toUri();
 
         return ResponseEntity.created(location)
-                .body(new ApiResponse(true, "User registered successfully@"));
+                .body(new ApiResponse(true, "User registered successfully"));
     }
 
 }

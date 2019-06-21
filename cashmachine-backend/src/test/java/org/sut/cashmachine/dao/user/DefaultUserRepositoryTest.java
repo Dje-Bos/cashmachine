@@ -5,12 +5,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Profile;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.sut.cashmachine.dao.order.ReceiptEntryRepository;
-import org.sut.cashmachine.dao.order.ReceiptRepository;
+import org.springframework.transaction.annotation.Transactional;
+import org.sut.cashmachine.dao.receipt.ReceiptEntryRepository;
+import org.sut.cashmachine.dao.receipt.DataJpaReceiptRepository;
 import org.sut.cashmachine.dao.product.ProductRepository;
 import org.sut.cashmachine.dataload.test.data.ProductTestData;
 import org.sut.cashmachine.dataload.test.data.ReceiptTestData;
@@ -29,11 +28,11 @@ import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
-@TestPropertySource(locations = {"/test-db.properties"})
+@TestPropertySource(locations = {"classpath:test-db.properties"})
 public class DefaultUserRepositoryTest {
 
     @Autowired
-    private UserRepository userRepository;
+    private DataJpaUserRepository dataJpaUserRepository;
 
     @Autowired
     private ProductRepository productRepository;
@@ -42,7 +41,7 @@ public class DefaultUserRepositoryTest {
     private ReceiptEntryRepository receiptEntryRepository;
 
     @Autowired
-    private ReceiptRepository receiptRepository;
+    private DataJpaReceiptRepository receiptRepository;
 
     @Before
     public void setUp() {
@@ -62,7 +61,7 @@ public class DefaultUserRepositoryTest {
         userModel.setName("zatovw");
         userModel.setAuth(AuthType.GOOGLE);
 
-        userRepository.save(userModel);
+        dataJpaUserRepository.save(userModel);
         assertNotNull(userModel.getId());
     }
 

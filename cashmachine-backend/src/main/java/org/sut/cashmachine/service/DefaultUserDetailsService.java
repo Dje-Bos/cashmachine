@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.sut.cashmachine.dao.user.DataJpaUserRepository;
 import org.sut.cashmachine.dao.user.UserRepository;
 import org.sut.cashmachine.model.user.UserModel;
 import org.sut.cashmachine.security.UserPrincipal;
@@ -14,8 +15,8 @@ public class DefaultUserDetailsService implements UserDetailsService {
     private UserRepository userRepository;
 
     @Autowired
-    public DefaultUserDetailsService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public DefaultUserDetailsService(UserRepository repository) {
+        this.userRepository = repository;
     }
 
     @Override

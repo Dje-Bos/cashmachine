@@ -24,6 +24,14 @@ public class LoginRequest {
         return password;
     }
 
+    public LoginRequest() {
+    }
+
+    public LoginRequest(@NotBlank @Email String email, @NotBlank String password) {
+        this.email = email;
+        this.password = password;
+    }
+
     public void setPassword(String password) {
         this.password = password;
     }

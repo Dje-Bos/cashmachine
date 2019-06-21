@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.Set;
@@ -52,6 +53,21 @@ public class UserModel implements Serializable {
         this.email = email;
         this.isActive = isActive;
         this.auth = AuthType.BASIC;
+    }
+
+    @Override
+    public String toString() {
+        return "UserModel{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                ", auth=" + auth +
+                ", email='" + email + '\'' +
+                ", creationTime=" + creationTime +
+                ", isActive=" + isActive +
+                ", pictureUrl='" + pictureUrl + '\'' +
+                ", roles=" + roles +
+                '}';
     }
 
     public UserModel(String email, Set<RoleModel> roles) {

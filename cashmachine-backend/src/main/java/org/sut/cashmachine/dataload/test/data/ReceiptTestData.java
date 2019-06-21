@@ -14,9 +14,9 @@ public final class ReceiptTestData {
 
     static {
         FIRST_ADMIN_RECEIPT.setId(1L);
-        FIRST_ADMIN_RECEIPT.setId(2L);
-        FIRST_ADMIN_RECEIPT.setId(3L);
-        FIRST_ADMIN_RECEIPT.setId(4L);
+        SECOND_ADMIN_RECEIPT.setId(2L);
+        FIRST_CASHIER_RECEIPT.setId(3L);
+        SECOND_CASHIER_RECEIPT.setId(4L);
         RECEIPTS.add(FIRST_ADMIN_RECEIPT);
         RECEIPTS.add(SECOND_ADMIN_RECEIPT);
         RECEIPTS.add(FIRST_CASHIER_RECEIPT);

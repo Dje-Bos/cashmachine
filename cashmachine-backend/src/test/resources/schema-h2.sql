@@ -14,10 +14,11 @@ CREATE TABLE users
     email         VARCHAR(25) NOT NULL UNIQUE,
     name          VARCHAR(50),
     auth          VARCHAR(25) NOT NULL,
-    password      VARCHAR(25),
+    password      VARCHAR(150),
     picture_url   VARCHAR(255),
     is_active     BOOLEAN     NOT NULL
 );
+
 
 CREATE TABLE roles
 (
@@ -70,7 +71,7 @@ CREATE TABLE receipts
     cashier_id    BIGINT    NOT NULL,
     total         DECIMAL,
     status        VARCHAR(25),
-    CONSTRAINT cashier_id_fk FOREIGN KEY (cashier_id) REFERENCES users (id)
+    CONSTRAINT cashier_id_fk FOREIGN KEY (cashier_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
 CREATE TABLE receipt_entries

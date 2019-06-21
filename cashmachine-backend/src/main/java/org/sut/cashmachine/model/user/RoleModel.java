@@ -33,6 +33,17 @@ public class RoleModel implements Serializable, GrantedAuthority {
     public RoleModel() {
     }
 
+    @Override
+    public String toString() {
+        return "RoleModel{" +
+                "id=" + id +
+                ", uid='" + uid + '\'' +
+                ", description='" + description + '\'' +
+                ", creationTime=" + creationTime +
+                '}';
+    }
+
+
     public Long getId() {
         return id;
     }

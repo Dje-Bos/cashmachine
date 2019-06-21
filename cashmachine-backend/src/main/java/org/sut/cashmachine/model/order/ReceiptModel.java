@@ -1,10 +1,16 @@
 package org.sut.cashmachine.model.order;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.sut.cashmachine.model.user.UserModel;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
 @Entity
@@ -17,17 +23,21 @@ public class ReceiptModel {
 //    @Version
 //    private Long version;
 
-    @Column(updatable = false, nullable = false)
+    @Column(updatable = false, nullable = false, name = "creation_time")
     private OffsetDateTime creationTime;
 
     @ManyToOne(targetEntity = UserModel.class, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private UserModel cashier;
 
-    @OneToMany(mappedBy = "receipt", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+
+    @OneToMany(mappedBy = "receipt", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<ReceiptEntryModel> receiptEnitities;
 
     @Column(name = "total")
     private BigDecimal total;
+
+    @Column(name = "status")
+    private String status;
 
     @PrePersist
     public void preInsert() {
@@ -57,8 +67,14 @@ public class ReceiptModel {
         this.id = id;
     }
 
+
     public OffsetDateTime getCreationTime() {
         return creationTime;
+    }
+
+    @JsonGetter("creationTime")
+    public String getCreationTimeString() {
+        return DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(creationTime.toLocalDateTime());
     }
 
     public void setCreationTime(OffsetDateTime creationTime) {
@@ -69,10 +85,16 @@ public class ReceiptModel {
         return cashier;
     }
 
+    @JsonGetter("cashier")
+    public Long getCashierId() {
+        return cashier.getId();
+    }
+
     public void setCashier(UserModel cashier) {
         this.cashier = cashier;
     }
 
+    @JsonGetter
     public BigDecimal getTotal() {
         return total;
     }
@@ -81,6 +103,35 @@ public class ReceiptModel {
         this.total = total;
     }
 
+    public ReceiptModel(Long id, OffsetDateTime creationTime, UserModel cashier, Set<ReceiptEntryModel> receiptEnitities, BigDecimal total, String status) {
+        this.id = id;
+        this.creationTime = creationTime;
+        this.cashier = cashier;
+        this.receiptEnitities = receiptEnitities;
+        this.total = total;
+        this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "ReceiptModel{" +
+                "id=" + id +
+                ", creationTime=" + creationTime +
+                ", cashier=" + cashier +
+                ", receiptEnitities=" + receiptEnitities +
+                ", total=" + total +
+                ", status='" + status + '\'' +
+                '}';
+    }
+
+    @JsonGetter
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 //    public Long getVersion() {
 //        return version;
 //    }
@@ -89,6 +140,7 @@ public class ReceiptModel {
 //        this.version = version;
 //    }
 
+    @JsonIgnore
     public Set<ReceiptEntryModel> getReceiptEnitities() {
         return receiptEnitities;
     }
