@@ -31,13 +31,15 @@ public class UserRepositoryTest {
     DataJpaUserRepository dataJpaUserRepository;
     @Autowired
     EntityManager entityManager;
+    @Autowired
+    UserRolesRepository userRolesRepository;
 
 
     UserRepository userRepository;
 
     @Before
     public void setUp() throws Exception {
-        userRepository = new UserRepositoryImpl(dataJpaUserRepository, entityManager);
+        userRepository = new UserRepositoryImpl(dataJpaUserRepository, userRolesRepository, entityManager);
     }
 
     @Test

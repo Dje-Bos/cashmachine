@@ -15,11 +15,13 @@ import java.util.stream.Collectors;
 public class UserRepositoryImpl implements UserRepository {
 
     private DataJpaUserRepository repository;
+    private UserRolesRepository userRolesRepository;
     private EntityManager entityManager;
 
     @Autowired
-    public UserRepositoryImpl(DataJpaUserRepository repository, EntityManager entityManager) {
+    public UserRepositoryImpl(DataJpaUserRepository repository, UserRolesRepository userRolesRepository, EntityManager entityManager) {
         this.repository = repository;
+        this.userRolesRepository = userRolesRepository;
         this.entityManager = entityManager;
     }
 
@@ -43,7 +45,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Transactional
     public UserModel save(UserModel userModel) {
         if (userModel.getRoles() != null) {
-            Set<RoleModel> roles = userModel.getRoles().stream().map(entityManager::merge).collect(Collectors.toSet());
+            Set<RoleModel> roles = userModel.getRoles().stream().map(RoleModel::getUid).map(userRolesRepository::getRoleEntityByUid).collect(Collectors.toSet());
             userModel.setRoles(roles);
         }
         return repository.save(userModel);
