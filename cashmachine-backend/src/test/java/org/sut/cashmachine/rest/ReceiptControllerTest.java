@@ -62,7 +62,8 @@ public class ReceiptControllerTest {
                 .andReturn();
         String contentAsString = result.getResponse().getContentAsString();
         ReceiptDto receipt = objectMapper.readValue(contentAsString, ReceiptDto.class);
-        assertEquals(2, receipt.getCashierId());
+        assertEquals("batman", receipt.getCashierName());
+        assertEquals("OPENED",receipt.getStatus());
     }
 
     private String authorize() throws Exception {

@@ -24,7 +24,7 @@ INSERT INTO `products`
 (3,'2019-06-20 22:52:19','Waffles','322', true, 'unit', 200, 58),
 (4,'2019-06-20 22:52:19','Petrushka','3', true, 'unit', 100, 32);
 
-INSERT INTO `receipts` VALUES (1,'2019-06-21 01:52:18',4,0,NULL),(2,'2019-06-20 22:52:19',4,0,NULL),(3,'2019-06-20 22:52:19',9,0,NULL);
+INSERT INTO `receipts` VALUES (1,'2019-06-21 01:52:18',4,0,'OPENED'),(2,'2019-06-20 22:52:19',4,0,'OPENED'),(3,'2019-06-20 22:52:19',9,0,'OPENED');
 
 
 

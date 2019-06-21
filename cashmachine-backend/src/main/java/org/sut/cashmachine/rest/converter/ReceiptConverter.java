@@ -9,6 +9,6 @@ public class ReceiptConverter implements Converter<ReceiptModel, ReceiptDto> {
 
     @Override
     public ReceiptDto convert(ReceiptModel object) {
-        return new ReceiptDto(object.getId(), object.getCashierId(), object.getStatus(), object.getTotal().toPlainString(), DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(object.getCreationTime().toLocalDateTime()));
+        return new ReceiptDto(object.getId(), object.getCashier().getName(), object.getStatus(), object.getTotal().toPlainString(), DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(object.getCreationTime().toLocalDateTime()));
     }
 }

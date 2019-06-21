@@ -72,10 +72,6 @@ public class ReceiptModel {
         return creationTime;
     }
 
-    @JsonGetter("creationTime")
-    public String getCreationTimeString() {
-        return DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(creationTime.toLocalDateTime());
-    }
 
     public void setCreationTime(OffsetDateTime creationTime) {
         this.creationTime = creationTime;
@@ -85,16 +81,10 @@ public class ReceiptModel {
         return cashier;
     }
 
-    @JsonGetter("cashier")
-    public Long getCashierId() {
-        return cashier.getId();
-    }
-
     public void setCashier(UserModel cashier) {
         this.cashier = cashier;
     }
 
-    @JsonGetter
     public BigDecimal getTotal() {
         return total;
     }
@@ -124,7 +114,6 @@ public class ReceiptModel {
                 '}';
     }
 
-    @JsonGetter
     public String getStatus() {
         return status;
     }

@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class ReceiptDto {
     private long id;
-    private long cashierId;
+    private String cashierName;
     private String status;
     private String total;
     private String creationTime;
@@ -12,9 +12,9 @@ public class ReceiptDto {
     public ReceiptDto() {
     }
 
-    public ReceiptDto(long id, long cashierId, String status, String total, String creationTime) {
+    public ReceiptDto(long id, String cashierName, String status, String total, String creationTime) {
         this.id = id;
-        this.cashierId = cashierId;
+        this.cashierName = cashierName;
         this.status = status;
         this.total = total;
         this.creationTime = creationTime;
@@ -24,7 +24,7 @@ public class ReceiptDto {
     public String toString() {
         return "ReceiptDto{" +
                 "id=" + id +
-                ", cashierId=" + cashierId +
+                ", cashierName='" + cashierName + '\'' +
                 ", status='" + status + '\'' +
                 ", total='" + total + '\'' +
                 ", creationTime='" + creationTime + '\'' +
@@ -37,7 +37,7 @@ public class ReceiptDto {
         if (o == null || getClass() != o.getClass()) return false;
         ReceiptDto that = (ReceiptDto) o;
         return id == that.id &&
-                cashierId == that.cashierId &&
+                Objects.equals(cashierName, that.cashierName) &&
                 Objects.equals(status, that.status) &&
                 Objects.equals(total, that.total) &&
                 Objects.equals(creationTime, that.creationTime);
@@ -45,7 +45,7 @@ public class ReceiptDto {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, cashierId, status, total, creationTime);
+        return Objects.hash(id, cashierName, status, total, creationTime);
     }
 
     public long getId() {
@@ -56,12 +56,12 @@ public class ReceiptDto {
         this.id = id;
     }
 
-    public long getCashierId() {
-        return cashierId;
+    public String getCashierName() {
+        return cashierName;
     }
 
-    public void setCashierId(long cashierId) {
-        this.cashierId = cashierId;
+    public void setCashierName(String cashierName) {
+        this.cashierName = cashierName;
     }
 
     public String getStatus() {
