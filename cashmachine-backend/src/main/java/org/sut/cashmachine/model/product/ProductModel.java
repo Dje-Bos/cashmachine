@@ -24,13 +24,15 @@ public class ProductModel {
     @Column(name = "is_allowed_for_purchase")
     private Boolean isAllowedForPurchase;
 
-    @OneToMany
-    @JoinColumn(name = "product_id")
-    private Set<ProductPriceModel> prices;
+    @Column(name = "unit")
+    private String unit;
 
-    @OneToMany
-    @JoinColumn(name = "product_id")
-    private List<ProductStockModel> stocks;
+    @Column(name = "price")
+    private Double price;
+
+
+    @Column(name = "in_stock")
+    private Double inStock;
 
     public ProductModel() {
     }
@@ -39,6 +41,17 @@ public class ProductModel {
         this.name = name;
         this.code = code;
         this.isAllowedForPurchase = isAllowedForPurchase;
+    }
+
+    public ProductModel(Long id, String name, String code, OffsetDateTime creationTime, Boolean isAllowedForPurchase, String unit, Double price, Double inStock) {
+        this.id = id;
+        this.name = name;
+        this.code = code;
+        this.creationTime = creationTime;
+        this.isAllowedForPurchase = isAllowedForPurchase;
+        this.unit = unit;
+        this.price = price;
+        this.inStock = inStock;
     }
 
     public ProductModel(String name, String code) {
@@ -87,27 +100,49 @@ public class ProductModel {
         this.creationTime = creationTime;
     }
 
-    public Set<ProductPriceModel> getPrices() {
-        return prices;
-    }
-
-    public void setPrices(Set<ProductPriceModel> prices) {
-        this.prices = prices;
-    }
-
-    public List<ProductStockModel> getStocks() {
-        return stocks;
-    }
-
-    public void setStocks(List<ProductStockModel> stocks) {
-        this.stocks = stocks;
-    }
-
     public Boolean getAllowedForPurchase() {
         return isAllowedForPurchase;
     }
 
     public void setAllowedForPurchase(Boolean allowedForPurchase) {
         isAllowedForPurchase = allowedForPurchase;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductModel{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", code='" + code + '\'' +
+                ", creationTime=" + creationTime +
+                ", isAllowedForPurchase=" + isAllowedForPurchase +
+                ", unit='" + unit + '\'' +
+                ", price=" + price +
+                ", inStock=" + inStock +
+                '}';
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public Double getInStock() {
+        return inStock;
+    }
+
+    public void setInStock(Double inStock) {
+        this.inStock = inStock;
     }
 }

@@ -39,6 +39,7 @@ public class ReceiptRepositoryImpl implements ReceiptRepository {
     public ReceiptModel createNew(long userId) {
         UserModel user = userRepository.getUserById(userId);
         ReceiptModel receiptModel = new ReceiptModel(user);
+        receiptModel.setStatus("OPENED");
         return repository.save(receiptModel);
     }
 }

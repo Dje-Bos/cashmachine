@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface DataJpaProductRepository extends JpaRepository<ProductModel, Long> {
-    List<ProductModel> findFirst3ByCodeOrNameContainingIgnoreCase(String codeQuery, String nameQuery);
+    List<ProductModel> findFirst3ByCodeOrNameContainingIgnoreCaseOrderByCodeAsc(String codeQuery, String nameQuery);
 }

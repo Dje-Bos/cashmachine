@@ -43,25 +43,11 @@ CREATE TABLE products
     name                    VARCHAR(35) NOT NULL,
     code                    VARCHAR(25) NOT NULL UNIQUE,
     is_allowed_for_purchase BOOLEAN     NOT NULL
+    unit                    VARCHAR(25) NOT NULL,
+    price                   DOUBLE      NOT NULL,
+    in_stock                DOUBLE      NOT NULL
 );
 
-CREATE TABLE product_prices
-(
-    id         BIGINT AUTO_INCREMENT PRIMARY KEY,
-    product_id BIGINT,
-    value      DECIMAL     NOT NULL,
-    unit       VARCHAR(25) NOT NULL,
-    CONSTRAINT product_id_fk FOREIGN KEY (product_id) REFERENCES products (id)
-);
-
-CREATE TABLE product_stocks
-(
-    id          BIGINT AUTO_INCREMENT PRIMARY KEY,
-    product_id  BIGINT,
-    stock_level DECIMAL     NOT NULL,
-    unit        VARCHAR(25) NOT NULL,
-    CONSTRAINT stock_product_id_fk FOREIGN KEY (product_id) REFERENCES products (id)
-);
 
 CREATE TABLE receipts
 (

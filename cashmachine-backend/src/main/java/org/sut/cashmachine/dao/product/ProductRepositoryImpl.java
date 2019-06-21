@@ -19,6 +19,6 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public List<ProductModel> findProductsByQuery(String query) {
-        return repository.findFirst3ByCodeOrNameContainingIgnoreCase(query, query);
+        return repository.findFirst3ByCodeOrNameContainingIgnoreCaseOrderByCodeAsc(query, query);
     }
 }

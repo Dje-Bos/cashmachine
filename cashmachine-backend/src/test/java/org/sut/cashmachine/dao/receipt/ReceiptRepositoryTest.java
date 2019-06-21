@@ -70,7 +70,7 @@ public class ReceiptRepositoryTest {
     public void testCreateNew() {
         ReceiptModel model = repository.createNew(1);
         assertEquals(model.getCashier().getId().longValue(), 1);
-
+        assertEquals("OPENED", model.getStatus());
         ReceiptModel actual = receiptRepository.getById(model.getId());
 
         assertEquals(model.getCashier().getId().longValue(), 1);

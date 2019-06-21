@@ -17,7 +17,12 @@ INSERT INTO `user_roles` (user_id, role_id) VALUES
 (7, 4),
 (5, 2);
 
-INSERT INTO `products` VALUES (1,'2019-06-20 22:52:19','?????? ???????','111111',1),(2,'2019-06-20 22:52:19','????????','222',1),(3,'2019-06-20 22:52:19','?????','322',1),(4,'2019-06-20 22:52:19','???????','222222',1);
+INSERT INTO `products`
+(id   ,creation_time     ,name           ,code     ,is_allowed_for_purchase, unit,    price,    in_stock) VALUES
+(1,'2019-06-20 22:52:19','Revo','111111', true, 'unit', 400, 43),
+(2,'2019-06-20 22:52:19','Revasik','222', true, 'unit', 300, 56),
+(3,'2019-06-20 22:52:19','Waffles','322', true, 'unit', 200, 58),
+(4,'2019-06-20 22:52:19','Petrushka','3', true, 'unit', 100, 32);
 
 INSERT INTO `receipts` VALUES (1,'2019-06-21 01:52:18',4,0,NULL),(2,'2019-06-20 22:52:19',4,0,NULL),(3,'2019-06-20 22:52:19',9,0,NULL);
 
