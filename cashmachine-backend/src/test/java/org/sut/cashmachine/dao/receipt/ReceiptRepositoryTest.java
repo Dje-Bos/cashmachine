@@ -39,13 +39,15 @@ import static org.junit.Assert.*;
 public class ReceiptRepositoryTest {
     @Autowired
     DataJpaReceiptRepository receiptRepository;
+    @Autowired
+    DataJpaUserRepository userRepository;
 
 
     ReceiptRepository repository;
 
     @Before
     public void setUp() throws Exception {
-        repository = new ReceiptRepositoryImpl(receiptRepository);
+        repository = new ReceiptRepositoryImpl(receiptRepository, userRepository);
     }
 
     @Test
@@ -62,6 +64,18 @@ public class ReceiptRepositoryTest {
         ReceiptModel receiptModel = repository.getById(ReceiptTestData.RECEIPT_0.getId());
 
         assertEquals(ReceiptTestData.RECEIPT_0.toString(), receiptModel.toString());
+    }
+
+    @Test
+    public void testCreateNew() {
+        ReceiptModel model = repository.createNew(1);
+        assertEquals(model.getCashier().getId().longValue(), 1);
+
+        ReceiptModel actual = receiptRepository.getById(model.getId());
+
+        assertEquals(model.getCashier().getId().longValue(), 1);
+        assertEquals(model.getId(), model.getId());
+
     }
 
 }

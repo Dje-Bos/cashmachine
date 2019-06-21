@@ -9,14 +9,18 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.sut.cashmachine.dao.receipt.ReceiptEntryRepository;
 import org.sut.cashmachine.dao.receipt.DataJpaReceiptRepository;
 import org.sut.cashmachine.dao.receipt.ReceiptRepository;
+import org.sut.cashmachine.dao.user.UserRepository;
 import org.sut.cashmachine.model.order.ReceiptModel;
 import org.sut.cashmachine.rest.converter.ReceiptConverter;
 import org.sut.cashmachine.rest.dto.ReceiptDto;
 import org.sut.cashmachine.rest.dto.ReceiptPageableResponse;
+import org.sut.cashmachine.security.CurrentUser;
+import org.sut.cashmachine.security.UserPrincipal;
 
 import javax.validation.constraints.Digits;
 import java.util.List;
@@ -48,6 +52,12 @@ public class ReceiptController {
             responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return responseEntity;
+    }
+
+    @PostMapping
+    @Transactional
+    public ResponseEntity<ReceiptDto> createNewReceipt(@CurrentUser UserPrincipal userPrincipal) {
+        return new ResponseEntity<>(CONVERTER.convert(receiptRepository.createNew(userPrincipal.getId())), HttpStatus.CREATED);
     }
 
     @GetMapping(params = {"page", "size"})

@@ -34,7 +34,7 @@ public class ReceiptModel {
     private Set<ReceiptEntryModel> receiptEnitities;
 
     @Column(name = "total")
-    private BigDecimal total;
+    private BigDecimal total = BigDecimal.ZERO;
 
     @Column(name = "status")
     private String status;

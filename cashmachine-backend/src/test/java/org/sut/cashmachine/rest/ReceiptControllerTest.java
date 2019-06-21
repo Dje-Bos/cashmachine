@@ -54,6 +54,17 @@ public class ReceiptControllerTest {
         assertEquals(new ReceiptConverter().convert(ReceiptTestData.RECEIPT_0).toString(), receipt.toString());
     }
 
+    @Test
+    public void createReceipt() throws Exception {
+        String token = authorize();
+        MvcResult result = mockMvc.perform(post("/api/receipt").header("Authorization", "Bearer " + token).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isCreated())
+                .andReturn();
+        String contentAsString = result.getResponse().getContentAsString();
+        ReceiptDto receipt = objectMapper.readValue(contentAsString, ReceiptDto.class);
+        assertEquals(2, receipt.getCashierId());
+    }
+
     private String authorize() throws Exception {
         String content = userJson();
         MvcResult mvcResult = mockMvc.perform(post("/auth/login")
