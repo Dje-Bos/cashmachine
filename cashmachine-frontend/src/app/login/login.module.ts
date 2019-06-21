@@ -13,6 +13,7 @@ import {
   MatProgressSpinnerModule
 } from '@angular/material';
 import {LoginCallbackComponent} from './login-callback/login-callback.component';
+import {ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [LoginComponent, LoginCallbackComponent],
@@ -24,7 +25,8 @@ import {LoginCallbackComponent} from './login-callback/login-callback.component'
     MatIconModule,
     MatButtonModule,
     MatInputModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    ReactiveFormsModule
   ],
   providers: [AuthService]
 })

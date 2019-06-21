@@ -1,3 +1,8 @@
+<div class="container">
+  <div class="row justify-content-end p-3">
+    <app-create-order></app-create-order>
+  </div>
+</div>
 <div class="container"><p>Orders</p></div>
 <div class="container">
   <div class="mat-elevation-z8">
@@ -18,12 +23,12 @@
 
         <ng-container matColumnDef="creationTime">
           <mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Created</mat-header-cell>
-          <mat-cell *matCellDef="let row">{{row.creationTime}}</mat-cell>
+          <mat-cell *matCellDef="let row">{{row.creationTime | date:'short'}}</mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="cashier">
           <mat-header-cell *matHeaderCellDef>Cashier</mat-header-cell>
-          <mat-cell *matCellDef="let row">{{row.cashier}}</mat-cell>
+          <mat-cell *matCellDef="let row">{{row.cashierName}}</mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="status">
@@ -43,6 +48,6 @@
       </mat-table>
     </div>
 
-    <mat-paginator [length]="resultsLength" [pageSize]="30"></mat-paginator>
+    <mat-paginator [length]="resultsLength" [pageSize]="9"></mat-paginator>
   </div>
 </div>

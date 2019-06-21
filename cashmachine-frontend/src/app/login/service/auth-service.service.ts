@@ -22,8 +22,17 @@ export class AuthService {
     return localStorage.getItem(AuthService.TOKEN_STORAGE_KEY);
   }
 
-  public signIn(providerId: string) {
+  public signInWithOAuth(providerId: string) {
     return window.open(`http://localhost:8888/cashmachine/oauth2/authorize/${providerId}?redirect_uri=${this.authCallBackUri}`, '_self');
+  }
+
+
+  public signIn(email: string, password: string): Observable<Observable<boolean>> {
+    return this.http.post('http://localhost:8888/cashmachine/auth/login', {email, password}).pipe(map(
+      resp => {
+          return this.loginWithToken(resp['accessToken']);
+    })
+    );
   }
 
   public loginWithToken(token): Observable<boolean> {

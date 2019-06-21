@@ -17,7 +17,6 @@ export class AnonymousGuard implements CanActivate {
       this.homePageService.redirectUserToHomePage(this.authService.getUser());
       return false;
     } else {
-      console.log('anonymous user not detected, current user = ' + this.authService.getUser());
       return true;
     }
   }

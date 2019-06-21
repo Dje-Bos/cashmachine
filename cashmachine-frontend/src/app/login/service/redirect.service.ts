@@ -12,7 +12,7 @@ export class RedirectService {
       ['CASHIER', '/orders'],
       ['SENIOR_CASHIER', '/orders'],
       ['MERCHANDISE', '/products'],
-      ['ADMIN', '/products']
+      ['ADMIN', '/orders']
     ]
   );
 

@@ -1,18 +1,22 @@
-<div class="container-fluid align-content-center justify-content-center row">
-  <h2>Welcome to cashmachine!</h2>
-  <h3>Please login</h3>
+<div class="container-fluid align-content-center justify-content-center">
+  <div class="row justify-content-center">
+    <h2>Welcome to cashmachine!</h2>
+  </div>
+  <div class="row justify-content-center">
+    <h5>Please login</h5>
+  </div>
 </div>
 <div class="container col-lg-2 col-sm-5 col-xs-12">
-  <form class="login-form">
+  <form class="login-form" [formGroup]="loginForm" (ngSubmit)="regularLogin()">
     <mat-form-field class="login-full-width">
       <label>
-        <input matInput placeholder="Login">
+        <input formControlName="email" matInput placeholder="Login">
       </label>
     </mat-form-field>
 
     <mat-form-field class="login-full-width">
       <label>
-        <input matInput type="password" placeholder="Password"/>
+        <input formControlName="password" matInput type="password" placeholder="Password"/>
       </label>
     </mat-form-field>
     <div class="row">
@@ -21,9 +25,10 @@
   </form>
   <div class="row justify-content-center login-separator"><span>OR</span></div>
   <div class="divider">
-  <mat-divider></mat-divider></div>
+    <mat-divider></mat-divider>
+  </div>
   <div class="row justify-content-center google-login-wrapper">
-    <button mat-icon-button aria-label="Log in with google" (click)="userService.signIn('google')">
+    <button mat-icon-button aria-label="Log in with google" (click)="authService.signInWithOAuth('google')">
       <mat-icon svgIcon="google-icon"></mat-icon>
     </button>
   </div>

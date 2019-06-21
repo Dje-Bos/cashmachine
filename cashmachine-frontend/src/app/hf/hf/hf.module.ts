@@ -1,14 +1,17 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 
-import { HfRoutingModule } from './hf-routing.module';
+import {HfRoutingModule} from './hf-routing.module';
 import {FooterComponent} from './footer/footer.component';
 import {HeaderComponent} from './header/header.component';
+import {HeaderProfileComponent} from './header-profile/header-profile.component';
+import {MatButtonModule, MatMenuModule} from '@angular/material';
 
 @NgModule({
   declarations: [
     FooterComponent,
-    HeaderComponent
+    HeaderComponent,
+    HeaderProfileComponent
   ],
   exports: [
     FooterComponent,
@@ -16,7 +19,9 @@ import {HeaderComponent} from './header/header.component';
   ],
   imports: [
     CommonModule,
-    HfRoutingModule
+    HfRoutingModule,
+    MatMenuModule,
+    MatButtonModule
   ]
 })
 export class HfModule { }
