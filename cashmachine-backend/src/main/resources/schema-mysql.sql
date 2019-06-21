@@ -42,7 +42,7 @@ CREATE TABLE products
     creation_time           TIMESTAMP   NOT NULL,
     name                    VARCHAR(35) NOT NULL,
     code                    VARCHAR(25) NOT NULL UNIQUE,
-    is_allowed_for_purchase BOOLEAN     NOT NULL
+    is_allowed_for_purchase BOOLEAN     NOT NULL,
     unit                    VARCHAR(25) NOT NULL,
     price                   DOUBLE      NOT NULL,
     in_stock                DOUBLE      NOT NULL
