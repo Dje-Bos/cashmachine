@@ -27,6 +27,11 @@ public class ReceiptRepositoryImpl implements ReceiptRepository {
         return repository.getById(id);
     }
 
+    @Override
+    public ReceiptModel getWithEntries(Long id) {
+        return repository.getByIdWithReceiptEntities(id);
+    }
+
 
     @Override
     public Page<ReceiptModel> findAll(Pageable pageable) {
@@ -40,6 +45,11 @@ public class ReceiptRepositoryImpl implements ReceiptRepository {
         UserModel user = userRepository.getUserById(userId);
         ReceiptModel receiptModel = new ReceiptModel(user);
         receiptModel.setStatus("OPENED");
+        return repository.save(receiptModel);
+    }
+
+    @Override
+    public ReceiptModel save(ReceiptModel receiptModel) {
         return repository.save(receiptModel);
     }
 }

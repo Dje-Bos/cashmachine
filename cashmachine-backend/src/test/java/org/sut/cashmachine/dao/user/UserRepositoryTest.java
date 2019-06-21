@@ -68,9 +68,9 @@ public class UserRepositoryTest {
 
     @Test
     public void testRemoveUserByEmail() {
-        boolean removed = userRepository.removeUserByEmail(UserTestData.SAVED_USER.getEmail());
+        boolean removed = userRepository.removeUserByEmail("iam@batman.com");
         assertTrue(removed);
-        UserModel user = userRepository.getUserById(UserTestData.SAVED_USER.getId());
+        UserModel user = userRepository.getUserById(2);
 
         assertNull(user);
     }

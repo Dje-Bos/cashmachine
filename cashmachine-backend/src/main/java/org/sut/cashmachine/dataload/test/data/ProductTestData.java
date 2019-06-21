@@ -8,7 +8,8 @@ import java.util.Set;
 public final class ProductTestData {
     public static final Set<ProductModel> PRODUCTS = new HashSet<>();
 
-    public static final ProductModel PARSLEY = new ProductModel("Петрушка", "222");
+    public static final ProductModel PARSLEY = new ProductModel(null, "Петрушка", "222", null, true, "Unit", 30.0, 3.0);
+
     public static final ProductModel WAFFLES = new ProductModel("Вафли", "322");
     public static final ProductModel WAR_SAUSAGE = new ProductModel("Боевая Колбаса", "111111");
     public static final ProductModel REVO = new ProductModel("Ревасик", "222222");

@@ -9,7 +9,12 @@ import org.sut.cashmachine.model.user.UserModel;
 public interface ReceiptRepository {
     ReceiptModel getById(Long id);
 
+    ReceiptModel getWithEntries(Long id);
+
     Page<ReceiptModel> findAll(Pageable pageable);
 
     ReceiptModel createNew(long userId);
+
+    ReceiptModel save(ReceiptModel receiptModel);
+
 }

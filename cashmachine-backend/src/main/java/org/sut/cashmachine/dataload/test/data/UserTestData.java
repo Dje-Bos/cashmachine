@@ -12,8 +12,8 @@ import java.util.Set;
 
 public final class UserTestData {
     public static final Set<UserModel> USERS = new HashSet<>();
-    public static final UserModel ADMIN = new UserModel( "{noop}password","zatovw@gmail.com", Set.of(RoleTestData.ADMIN_ROLE));
-    public static final UserModel CASHIER = new UserModel("cashier", "user@gmail.com", Set.of(RoleTestData.CASHIER_ROLE));
+    public static final UserModel ADMIN = new UserModel( "{noop}password","zatow@gmail.com", Set.of());
+    public static final UserModel CASHIER = new UserModel("cashier", "user@gmail.com", Set.of());
     public static final UserModel SAVED_USER = new UserModel("name", null, AuthType.GOOGLE, "email@example.com", OffsetDateTime.from(ZonedDateTime.parse("2019-05-17T18:47:52", DateTimeFormatter.ISO_LOCAL_DATE_TIME.withZone(ZoneId.systemDefault()))), true, null, Set.of());
     static {
         SAVED_USER.setId(1L);

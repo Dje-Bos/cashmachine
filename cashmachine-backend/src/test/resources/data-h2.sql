@@ -1,3 +1,4 @@
+delete from receipt_entries;
 delete from products;
 delete from receipts;
 delete from roles;
@@ -8,8 +9,8 @@ VALUES (1, parsedatetime('17-05-2019 18:47:52', 'dd-MM-yyyy hh:mm:ss'), 'email@e
        (2, parsedatetime('17-05-2019 18:57:52', 'dd-MM-yyyy hh:mm:ss'), 'iam@batman.com', 'batman', '{noop}bat', 'BASIC', true);
 
 INSERT INTO receipts(id, creation_time, cashier_id, total, status       ) VALUES
-(1, parsedatetime('17-05-2019 18:57:52', 'dd-MM-yyyy hh:mm:ss'), 1, 10.0, 'OK'),
-(2, parsedatetime('17-05-2019 18:58:52', 'dd-MM-yyyy hh:mm:ss'), 1, 11.0, 'OK'),
+(1, parsedatetime('17-05-2019 18:57:52', 'dd-MM-yyyy hh:mm:ss'), 1, 2501.0, 'OK'),
+(2, parsedatetime('17-05-2019 18:58:52', 'dd-MM-yyyy hh:mm:ss'), 1, 458.3, 'OK'),
 (3, parsedatetime('17-05-2019 18:59:52', 'dd-MM-yyyy hh:mm:ss'), 1, 12.0, 'OK'),
 (4, parsedatetime('17-05-2019 19:57:52', 'dd-MM-yyyy hh:mm:ss'), 1, 13.0, 'OK');
 
@@ -22,3 +23,8 @@ INSERT INTO products
 (3, '2019-06-20 22:57:18', 'Revo drink'  , 'Revo'                    , true,    'unit' ,  458.3      ,43),
 (4, '2019-06-20 22:58:18', 'Waffles'     , 'Roshed waffles'          , true,    'kg'   ,  102        ,34),
 (5, '2019-06-20 22:59:18', 'Milk waffles', 'Switoch waffles'         , true,    'pound',  900        ,65);
+
+INSERT INTO receipt_entries (id     ,    product_id     , receipt_id  ,  order_quantity,  total) VALUES
+(1, 1, 1, 20, 2000  ),
+(2, 2, 1, 2 , 501   ),
+(3, 3, 2, 1 , 458.3 ),

@@ -31,6 +31,7 @@ public class ReceiptModel {
 
 
     @OneToMany(mappedBy = "receipt", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OrderBy("id asc")
     private Set<ReceiptEntryModel> receiptEnitities;
 
     @Column(name = "total")
@@ -81,6 +82,11 @@ public class ReceiptModel {
         return cashier;
     }
 
+    @JsonGetter("cashier")
+    public String getCashierName() {
+        return cashier.getName();
+    }
+
     public void setCashier(UserModel cashier) {
         this.cashier = cashier;
     }
@@ -108,7 +114,6 @@ public class ReceiptModel {
                 "id=" + id +
                 ", creationTime=" + creationTime +
                 ", cashier=" + cashier +
-                ", receiptEnitities=" + receiptEnitities +
                 ", total=" + total +
                 ", status='" + status + '\'' +
                 '}';
@@ -129,7 +134,6 @@ public class ReceiptModel {
 //        this.version = version;
 //    }
 
-    @JsonIgnore
     public Set<ReceiptEntryModel> getReceiptEnitities() {
         return receiptEnitities;
     }

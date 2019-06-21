@@ -6,4 +6,8 @@ import java.util.List;
 
 public interface ProductRepository {
     List<ProductModel> findProductsByQuery(String query);
+
+    ProductModel findProductByCode(String code);
+
+    ProductModel save(ProductModel productModel);
 }

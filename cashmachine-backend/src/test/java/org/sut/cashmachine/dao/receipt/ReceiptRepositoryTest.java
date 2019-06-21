@@ -1,7 +1,9 @@
 package org.sut.cashmachine.dao.receipt;
 
+import data.ReceiptEntriesData;
 import data.ReceiptTestData;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,7 @@ import org.sut.cashmachine.dao.user.UserRepository;
 import org.sut.cashmachine.dao.user.UserRepositoryImpl;
 import org.sut.cashmachine.dataload.test.data.RoleTestData;
 import org.sut.cashmachine.dataload.test.data.UserTestData;
+import org.sut.cashmachine.model.order.ReceiptEntryModel;
 import org.sut.cashmachine.model.order.ReceiptModel;
 import org.sut.cashmachine.model.user.AuthType;
 import org.sut.cashmachine.model.user.UserModel;
@@ -76,6 +79,14 @@ public class ReceiptRepositoryTest {
         assertEquals(model.getCashier().getId().longValue(), 1);
         assertEquals(model.getId(), model.getId());
 
+    }
+
+    @Test
+    @Ignore
+    public void testGetWithEntries() {
+        ReceiptModel model = repository.getWithEntries(1L);
+        Set<ReceiptEntryModel> expected = Set.of(ReceiptEntriesData.ENTRY_0, ReceiptEntriesData.ENTRY_1);
+        assertEquals(expected, model.getReceiptEnitities());
     }
 
 }

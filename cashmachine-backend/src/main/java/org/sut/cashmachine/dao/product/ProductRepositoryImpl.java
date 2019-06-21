@@ -21,4 +21,14 @@ public class ProductRepositoryImpl implements ProductRepository {
     public List<ProductModel> findProductsByQuery(String query) {
         return repository.findFirst3ByCodeOrNameContainingIgnoreCaseOrderByCodeAsc(query, query);
     }
+
+    @Override
+    public ProductModel findProductByCode(String code) {
+        return repository.findByCode(code);
+    }
+
+    @Override
+    public ProductModel save(ProductModel productModel) {
+        return repository.save(productModel);
+    }
 }

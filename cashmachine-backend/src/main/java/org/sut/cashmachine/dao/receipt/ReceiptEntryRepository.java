@@ -9,6 +9,6 @@ import org.sut.cashmachine.model.product.ProductModel;
 
 @Repository
 public interface ReceiptEntryRepository extends JpaRepository<ReceiptEntryModel, ReceiptModelPK> {
-    ReceiptEntryModel findByProductAndReceipt(ProductModel product, ReceiptModel receipt);
+    ReceiptEntryModel findByProductIdAndReceiptId(long productId, long receiptId);
 
 }

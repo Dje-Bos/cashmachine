@@ -61,13 +61,14 @@ CREATE TABLE receipts
 
 CREATE TABLE receipt_entries
 (
+    id             BIGINT AUTO_INCREMENT PRIMARY KEY,
     product_id     BIGINT,
     receipt_id     BIGINT,
     order_number   INT     NOT NULL,
     order_quantity DECIMAL NOT NULL,
     total          DECIMAL NOT NULL,
 
-    CONSTRAINT receipt_entries_pk PRIMARY KEY (product_id, receipt_id),
+    UNIQUE KEY (product_id, receipt_id),
     CONSTRAINT receipt_id_fk FOREIGN KEY (receipt_id) REFERENCES receipts (id),
     CONSTRAINT receipt_product_id_fk FOREIGN KEY (product_id) REFERENCES products (id)
 

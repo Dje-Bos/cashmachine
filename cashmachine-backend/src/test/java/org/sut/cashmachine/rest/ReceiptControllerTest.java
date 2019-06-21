@@ -19,11 +19,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.sut.cashmachine.model.order.ReceiptModel;
 import org.sut.cashmachine.rest.converter.ReceiptConverter;
-import org.sut.cashmachine.rest.dto.AuthResponse;
-import org.sut.cashmachine.rest.dto.LoginRequest;
-import org.sut.cashmachine.rest.dto.ReceiptDto;
-import org.sut.cashmachine.rest.dto.ReceiptPageableResponse;
+import org.sut.cashmachine.rest.dto.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -97,4 +95,22 @@ public class ReceiptControllerTest {
         assertEquals(expected, receipts);
 
     }
+
+    @Test
+    public void createNewEntry() throws Exception {
+        String token = authorize();
+        CreateReceiptEntryRequest request = new CreateReceiptEntryRequest("Roshed waffles", 3);
+        MvcResult result = mockMvc.perform(post("/api/receipt/1").header("Authorization", "Bearer " + token).param("page","1").content(objectMapper.writeValueAsString(request)).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+        String contentAsString = result.getResponse().getContentAsString();
+        ReceiptDto receipt = objectMapper.readValue(contentAsString, ReceiptDto.class);
+        assertEquals("2807.0", receipt.getTotal());
+        assertEquals(3, receipt.getEntries().size());
+        assertEquals(BigDecimal.valueOf(306.0), receipt.getEntries().get(2).getTotal());
+//        ReceiptPageableResponse expected = new ReceiptPageableResponse(List.of(receiptConverter.convert(ReceiptTestData.RECEIPT_1), receiptConverter.convert(ReceiptTestData.RECEIPT_0)), 4);
+//        assertEquals(expected, receipt);
+
+    }
+
 }

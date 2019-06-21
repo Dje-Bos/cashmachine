@@ -1,23 +1,30 @@
 package org.sut.cashmachine.rest.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import org.sut.cashmachine.model.order.ReceiptEntryModel;
+
+import java.util.List;
 import java.util.Objects;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ReceiptDto {
     private long id;
     private String cashierName;
     private String status;
     private String total;
     private String creationTime;
+    private List<ReceiptEntryDto> entries;
 
     public ReceiptDto() {
     }
 
-    public ReceiptDto(long id, String cashierName, String status, String total, String creationTime) {
+    public ReceiptDto(long id, String cashierName, String status, String total, String creationTime, List<ReceiptEntryDto> entries) {
         this.id = id;
         this.cashierName = cashierName;
         this.status = status;
         this.total = total;
         this.creationTime = creationTime;
+        this.entries = entries;
     }
 
     @Override
@@ -28,6 +35,7 @@ public class ReceiptDto {
                 ", status='" + status + '\'' +
                 ", total='" + total + '\'' +
                 ", creationTime='" + creationTime + '\'' +
+                ", entries=" + entries +
                 '}';
     }
 
@@ -40,12 +48,13 @@ public class ReceiptDto {
                 Objects.equals(cashierName, that.cashierName) &&
                 Objects.equals(status, that.status) &&
                 Objects.equals(total, that.total) &&
-                Objects.equals(creationTime, that.creationTime);
+                Objects.equals(creationTime, that.creationTime) &&
+                Objects.equals(entries, that.entries);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, cashierName, status, total, creationTime);
+        return Objects.hash(id, cashierName, status, total, creationTime, entries);
     }
 
     public long getId() {
@@ -86,5 +95,13 @@ public class ReceiptDto {
 
     public void setCreationTime(String creationTime) {
         this.creationTime = creationTime;
+    }
+
+    public List<ReceiptEntryDto> getEntries() {
+        return entries;
+    }
+
+    public void setEntries(List<ReceiptEntryDto> entries) {
+        this.entries = entries;
     }
 }
