@@ -73,7 +73,7 @@ public class ReceiptController {
     public ResponseEntity<ReceiptPageableResponse> getReceiptsWithPagination(@RequestParam("page") @Range(max = Integer.MAX_VALUE) int page, @RequestParam("size") @Range(max = 100) int size) {
         Page<ReceiptModel> receiptModelPage = receiptRepository.findAll(PageRequest.of(page, size, Sort.by("creationTime").descending()));
 
-        return new ResponseEntity<>(new ReceiptPageableResponse(receiptModelPage.getContent().stream().map(CONVERTER::convert).collect(Collectors.toList()), receiptModelPage.getTotalElements()), HttpStatus.OK);
+        return new ResponseEntity<>(new ReceiptPageableResponse(receiptModelPage.getContent().stream().peek(e->e.setReceiptEnitities(null)).map(CONVERTER::convert).collect(Collectors.toList()), receiptModelPage.getTotalElements()), HttpStatus.OK);
     }
 
     @PostMapping("/{id}")

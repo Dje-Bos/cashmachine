@@ -23,6 +23,7 @@ import org.sut.cashmachine.rest.dto.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -49,7 +50,8 @@ public class ReceiptControllerTest {
                 .andReturn();
         String contentAsString = result.getResponse().getContentAsString();
         ReceiptDto receipt = objectMapper.readValue(contentAsString, ReceiptDto.class);
-        assertEquals(new ReceiptConverter().convert(ReceiptTestData.RECEIPT_0).toString(), receipt.toString());
+        ReceiptDto convert = new ReceiptConverter().convert(ReceiptTestData.RECEIPT_0);
+        assertEquals(convert.toString(), receipt.toString());
     }
 
     @Test
@@ -92,6 +94,8 @@ public class ReceiptControllerTest {
 
         ReceiptConverter receiptConverter = new ReceiptConverter();
         ReceiptPageableResponse expected = new ReceiptPageableResponse(List.of(receiptConverter.convert(ReceiptTestData.RECEIPT_1), receiptConverter.convert(ReceiptTestData.RECEIPT_0)), 4);
+        List<ReceiptDto> collect = expected.getItems().stream().peek(e -> e.setEntries(null)).collect(Collectors.toList());
+        collect.get(0);
         assertEquals(expected, receipts);
 
     }
