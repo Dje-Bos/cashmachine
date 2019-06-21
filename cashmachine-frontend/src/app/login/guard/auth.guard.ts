@@ -1,12 +1,12 @@
 import {Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
+import {ActivatedRouteSnapshot, CanActivate, CanLoad, Route, Router, RouterStateSnapshot, UrlSegment, UrlTree} from '@angular/router';
 import {Observable} from 'rxjs';
 import {AuthService} from '../service/auth-service.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard implements CanActivate {
+export class AuthGuard implements CanActivate, CanLoad {
 
   constructor(private authService: AuthService, private router: Router) {
   }
@@ -15,17 +15,18 @@ export class AuthGuard implements CanActivate {
     Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     console.log('AuthGuard#canActivate called');
     if (this.authService.isUserSignedIn()) {
+      console.log('current user = ' + this.authService.getUser().email);
       return true;
     } else {
-      if (route.queryParams.token) {
-        this.authService.loginWithToken(route.queryParams.token);
-        return true;
-      } else {
-        this.authService.defaultRedirecturi = state.url;
-        this.router.navigate(['/login']);
-        return false;
-      }
+      console.log('redirect to login');
+      this.authService.redirectUri = state.url;
+      this.router.navigate(['/login']);
+      return true;
     }
+  }
+
+  canLoad(route: Route, segments: UrlSegment[]): boolean {
+    return this.authService.isUserSignedIn();
   }
 
 }

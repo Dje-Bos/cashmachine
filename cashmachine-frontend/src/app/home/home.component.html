@@ -1,6 +1,6 @@
-<div>
-  <div> Hello:{{profile.name}}</div>
-  <div> Your email:{{profile.email}}</div>
-  <img [src]="profile.picture">
+<div *ngIf="user">
+  <div> Hello:{{user.name}}</div>
+  <div> Your email:{{user.email}}</div>
+  <img [src]="user.pictureUrl">
 </div>
-<app-orders></app-orders>
+<!--<app-orders></app-orders>-->

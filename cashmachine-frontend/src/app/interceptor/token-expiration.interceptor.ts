@@ -1,4 +1,4 @@
-import {AuthService} from '../service/auth-service.service';
+import {AuthService} from '../login/service/auth-service.service';
 import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Router} from '@angular/router';

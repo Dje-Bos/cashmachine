@@ -1,29 +1,30 @@
 import {HttpClient} from '@angular/common/http';
-import {Component, ViewChild, AfterViewInit} from '@angular/core';
+import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {merge, Observable, of as observableOf} from 'rxjs';
 import {catchError, map, startWith, switchMap} from 'rxjs/operators';
+
 @Component({
   selector: 'app-orders',
-  templateUrl: './orders.component.html',
-  styleUrls: ['./orders.component.css']
+  templateUrl: './order-list.component.html',
+  styleUrls: ['./order-list.component.css']
 })
 /**
  * @title Table retrieving data through HTTP
  */
-export class OrdersComponent implements AfterViewInit {
+export class OrderListComponent implements AfterViewInit {
 
-  displayedColumns: string[] = ['id', 'status', 'cashierId', 'total'];
+  displayedColumns: string[] = ['id', 'status', 'cashier', 'total', 'creationTime'];
   orderDatabase: OrderDatabase | null;
   data: Order[] = [];
 
   resultsLength = 0;
   isLoadingResults = true;
 
-  @ViewChild(MatPaginator, {static: false})
+  @ViewChild(MatPaginator)
   paginator: MatPaginator;
-  @ViewChild(MatSort, {static: false})
+  @ViewChild(MatSort)
   sort: MatSort;
 
   constructor(private _httpClient: HttpClient) {}
@@ -63,10 +64,11 @@ export interface PageableOrders {
 }
 
 export interface Order {
-  creation_time: string;
+  creationTime: string;
   id: string;
   status: string;
   total: string;
+  cashier: string;
 }
 
 /** An example database that the data source uses to retrieve data for the table. */
