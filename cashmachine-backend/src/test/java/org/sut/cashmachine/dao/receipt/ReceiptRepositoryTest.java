@@ -82,7 +82,6 @@ public class ReceiptRepositoryTest {
     }
 
     @Test
-    @Ignore
     public void testGetWithEntries() {
         ReceiptModel model = repository.getWithEntries(1L);
         Set<ReceiptEntryModel> expected = Set.of(ReceiptEntriesData.ENTRY_0, ReceiptEntriesData.ENTRY_1);

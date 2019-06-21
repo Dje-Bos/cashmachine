@@ -28,6 +28,7 @@ public class ReceiptRepositoryImpl implements ReceiptRepository {
     }
 
     @Override
+    @Transactional
     public ReceiptModel getWithEntries(Long id) {
         return repository.getByIdWithReceiptEntities(id);
     }

@@ -58,8 +58,6 @@ public class ReceiptEntryModel {
         if (o == null || getClass() != o.getClass()) return false;
         ReceiptEntryModel that = (ReceiptEntryModel) o;
         return id == that.id &&
-                Objects.equals(product.getId(), that.product.getId()) &&
-                Objects.equals(receipt.getId(), that.receipt.getId()) &&
                 Objects.equals(orderQuantity, that.orderQuantity) &&
                 Objects.equals(total, that.total);
     }

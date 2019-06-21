@@ -64,7 +64,6 @@ CREATE TABLE receipt_entries
     id             BIGINT AUTO_INCREMENT PRIMARY KEY,
     product_id     BIGINT,
     receipt_id     BIGINT,
-    order_number   INT     NOT NULL,
     order_quantity DECIMAL NOT NULL,
     total          DECIMAL NOT NULL,
 
