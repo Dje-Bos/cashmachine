@@ -110,4 +110,36 @@ public class ReceiptController {
         return new ResponseEntity(dto, HttpStatus.OK);
     }
 
+    @PutMapping("/{id}")
+    @Transactional
+    public ResponseEntity addEntry(@PathVariable("id") long receiptId, @RequestBody @Valid UpdateStatus status) {
+        ReceiptModel receipt = receiptRepository.getWithEntries(receiptId);
+        if (receipt == null) {
+            return new ResponseEntity(new Error("Receipt with id " + receipt + " was not found", ""), HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+        receipt.setStatus(status.getStatus());
+        receiptRepository.save(receipt);
+        return new ResponseEntity(CONVERTER.convert(receipt), HttpStatus.OK);
+    }
+
+    private static class UpdateStatus {
+        private String status;
+
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
+        }
+
+        public UpdateStatus() {
+        }
+
+        public UpdateStatus(String status) {
+            this.status = status;
+        }
+    }
+
+
 }
