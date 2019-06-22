@@ -21,16 +21,20 @@ export class OrderService {
     return this.http.get<PageableOrders>(requestUrl);
   }
 
+  public getOrderWithId(id: string): Observable<Order> {
+    return this.http.get<Order>(`http://localhost:8888/cashmachine/api/receipt/${id}`);
+  }
+
   public createNewOrder(): Observable<Order> {
     return this.http.post<Order>('http://localhost:8888/cashmachine/api/receipt', {});
   }
 
-  public addProductToOrderWithQuantity(orderId: string, code: string, quantity: number): Observable<Order> {
-    return this.http.post<Order>(`http://localhost:8888/cashmachine/api/receipt/${orderId}`, {code, quantity});
+  public addProductToOrderWithQuantity(orderId: string, productCode: string, quantity: number): Observable<Order> {
+    return this.http.post<Order>(`http://localhost:8888/cashmachine/api/receipt/${orderId}`, {productCode, quantity});
   }
 
-  public updateEntryForOrder(orderId: string, entry: OrderEntry): Observable<Order> {
-    return this.http.put<Order>(`http://localhost:8888/cashmachine/api/receipt/${orderId}`, {entry});
+  public updateEntry(entry: OrderEntry): Observable<OrderEntry> {
+    return this.http.put<OrderEntry>(`http://localhost:8888/cashmachine/api/receipt-entries/${entry.id}`, entry);
   }
 
   public updateOrderStatus(orderId: string, status: string): Observable<Order> {

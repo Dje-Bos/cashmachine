@@ -8,8 +8,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.sut.cashmachine.service.DefaultUserDetailsService;
-import org.sut.cashmachine.service.oauth.TokenProvider;
+import org.sut.cashmachine.service.user.impl.DefaultUserDetailsService;
+import org.sut.cashmachine.service.oauth.impl.TokenProvider;
 import org.sut.cashmachine.util.StringUtil;
 
 import javax.servlet.FilterChain;

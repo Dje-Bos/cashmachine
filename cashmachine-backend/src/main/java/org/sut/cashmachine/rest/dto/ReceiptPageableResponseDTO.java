@@ -1,24 +1,22 @@
 package org.sut.cashmachine.rest.dto;
 
 
-import org.sut.cashmachine.model.order.ReceiptModel;
-
 import java.util.List;
 import java.util.Objects;
 
-public class ReceiptPageableResponse {
-    private List<ReceiptDto> items;
+public class ReceiptPageableResponseDTO {
+    private List<ReceiptDTO> items;
     private long totalCount;
 
-    public ReceiptPageableResponse(List<ReceiptDto> items, long totalCount) {
+    public ReceiptPageableResponseDTO(List<ReceiptDTO> items, long totalCount) {
         this.items = items;
         this.totalCount = totalCount;
     }
 
-    public ReceiptPageableResponse() {
+    public ReceiptPageableResponseDTO() {
     }
 
-    public void setItems(List<ReceiptDto> items) {
+    public void setItems(List<ReceiptDTO> items) {
         this.items = items;
     }
 
@@ -26,7 +24,7 @@ public class ReceiptPageableResponse {
         this.totalCount = totalCount;
     }
 
-    public List<ReceiptDto> getItems() {
+    public List<ReceiptDTO> getItems() {
         return items;
     }
 
@@ -34,7 +32,7 @@ public class ReceiptPageableResponse {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ReceiptPageableResponse that = (ReceiptPageableResponse) o;
+        ReceiptPageableResponseDTO that = (ReceiptPageableResponseDTO) o;
         return totalCount == that.totalCount &&
                 Objects.equals(items, that.items);
     }

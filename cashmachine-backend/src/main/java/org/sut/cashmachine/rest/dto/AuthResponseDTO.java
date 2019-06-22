@@ -1,18 +1,18 @@
 package org.sut.cashmachine.rest.dto;
 
-public class AuthResponse {
+public class AuthResponseDTO {
     private String accessToken;
     private String tokenType = "Bearer";
 
-    public AuthResponse(String accessToken, String tokenType) {
+    public AuthResponseDTO(String accessToken, String tokenType) {
         this.accessToken = accessToken;
         this.tokenType = tokenType;
     }
 
-    public AuthResponse() {
+    public AuthResponseDTO() {
     }
 
-    public AuthResponse(String accessToken) {
+    public AuthResponseDTO(String accessToken) {
         this.accessToken = accessToken;
     }
 

@@ -8,24 +8,22 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.sut.cashmachine.model.order.ReceiptModel;
-import org.sut.cashmachine.rest.converter.ReceiptConverter;
+import org.sut.cashmachine.rest.converter.Converter;
 import org.sut.cashmachine.rest.dto.*;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -39,6 +37,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ReceiptControllerTest {
     @Autowired
     MockMvc mockMvc;
+    @Autowired
+    Converter<ReceiptModel, ReceiptDTO> receiptConverter;
 
     ObjectMapper objectMapper = new ObjectMapper();
 
@@ -49,8 +49,8 @@ public class ReceiptControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
         String contentAsString = result.getResponse().getContentAsString();
-        ReceiptDto receipt = objectMapper.readValue(contentAsString, ReceiptDto.class);
-        ReceiptDto convert = new ReceiptConverter().convert(ReceiptTestData.RECEIPT_0);
+        ReceiptDTO receipt = objectMapper.readValue(contentAsString, ReceiptDTO.class);
+        ReceiptDTO convert = receiptConverter.convert(ReceiptTestData.RECEIPT_0);
         assertEquals(convert.toString(), receipt.toString());
     }
 
@@ -61,7 +61,7 @@ public class ReceiptControllerTest {
                 .andExpect(status().isCreated())
                 .andReturn();
         String contentAsString = result.getResponse().getContentAsString();
-        ReceiptDto receipt = objectMapper.readValue(contentAsString, ReceiptDto.class);
+        ReceiptDTO receipt = objectMapper.readValue(contentAsString, ReceiptDTO.class);
         assertEquals("batman", receipt.getCashierName());
         assertEquals("OPENED",receipt.getStatus());
     }
@@ -71,13 +71,13 @@ public class ReceiptControllerTest {
         MvcResult mvcResult = mockMvc.perform(post("/auth/login")
                 .contentType(MediaType.APPLICATION_JSON).content(content)).andExpect(status().isOk()).andReturn();
         String contentAsString = mvcResult.getResponse().getContentAsString();
-        return objectMapper.readValue(contentAsString, AuthResponse.class).getAccessToken();
+        return objectMapper.readValue(contentAsString, AuthResponseDTO.class).getAccessToken();
     }
 
 
     private String userJson() {
         try {
-            return objectMapper.writeValueAsString(new LoginRequest("iam@batman.com", "bat"));
+            return objectMapper.writeValueAsString(new LoginRequestDTO("iam@batman.com", "bat"));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
@@ -90,11 +90,10 @@ public class ReceiptControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
         String contentAsString = result.getResponse().getContentAsString();
-        ReceiptPageableResponse receipts = objectMapper.readValue(contentAsString, ReceiptPageableResponse.class);
+        ReceiptPageableResponseDTO receipts = objectMapper.readValue(contentAsString, ReceiptPageableResponseDTO.class);
 
-        ReceiptConverter receiptConverter = new ReceiptConverter();
-        ReceiptPageableResponse expected = new ReceiptPageableResponse(List.of(receiptConverter.convert(ReceiptTestData.RECEIPT_1), receiptConverter.convert(ReceiptTestData.RECEIPT_0)), 4);
-        List<ReceiptDto> collect = expected.getItems().stream().peek(e -> e.setEntries(null)).collect(Collectors.toList());
+        ReceiptPageableResponseDTO expected = new ReceiptPageableResponseDTO(List.of(receiptConverter.convert(ReceiptTestData.RECEIPT_1), receiptConverter.convert(ReceiptTestData.RECEIPT_0)), 4);
+        List<ReceiptDTO> collect = expected.getItems().stream().peek(e -> e.setEntries(null)).collect(Collectors.toList());
         collect.get(0);
         assertEquals(expected, receipts);
 
@@ -103,16 +102,16 @@ public class ReceiptControllerTest {
     @Test
     public void createNewEntry() throws Exception {
         String token = authorize();
-        CreateReceiptEntryRequest request = new CreateReceiptEntryRequest("Roshed waffles", 3);
+        CreateReceiptEntryRequestDTO request = new CreateReceiptEntryRequestDTO("Roshed waffles", 3);
         MvcResult result = mockMvc.perform(post("/api/receipt/1").header("Authorization", "Bearer " + token).param("page","1").content(objectMapper.writeValueAsString(request)).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
         String contentAsString = result.getResponse().getContentAsString();
-        ReceiptDto receipt = objectMapper.readValue(contentAsString, ReceiptDto.class);
+        ReceiptDTO receipt = objectMapper.readValue(contentAsString, ReceiptDTO.class);
         assertEquals("2807.0", receipt.getTotal());
         assertEquals(3, receipt.getEntries().size());
         assertEquals(BigDecimal.valueOf(306.0), receipt.getEntries().get(2).getTotal());
-//        ReceiptPageableResponse expected = new ReceiptPageableResponse(List.of(receiptConverter.convert(ReceiptTestData.RECEIPT_1), receiptConverter.convert(ReceiptTestData.RECEIPT_0)), 4);
+//        ReceiptPageableResponseDTO expected = new ReceiptPageableResponseDTO(List.of(receiptConverter.convert(ReceiptTestData.RECEIPT_1), receiptConverter.convert(ReceiptTestData.RECEIPT_0)), 4);
 //        assertEquals(expected, receipt);
 
     }

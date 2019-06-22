@@ -4,7 +4,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 
-public class LoginRequest {
+public class LoginRequestDTO {
     @NotBlank
     @Email
     private String email;
@@ -24,10 +24,10 @@ public class LoginRequest {
         return password;
     }
 
-    public LoginRequest() {
+    public LoginRequestDTO() {
     }
 
-    public LoginRequest(@NotBlank @Email String email, @NotBlank String password) {
+    public LoginRequestDTO(@NotBlank @Email String email, @NotBlank String password) {
         this.email = email;
         this.password = password;
     }

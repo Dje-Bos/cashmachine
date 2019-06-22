@@ -16,15 +16,14 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.sut.cashmachine.rest.converter.ProductConverter;
-import org.sut.cashmachine.rest.dto.AuthResponse;
-import org.sut.cashmachine.rest.dto.LoginRequest;
-import org.sut.cashmachine.rest.dto.ProductDto;
-import org.sut.cashmachine.rest.dto.ReceiptDto;
+import org.sut.cashmachine.model.product.ProductModel;
+import org.sut.cashmachine.rest.converter.Converter;
+import org.sut.cashmachine.rest.dto.AuthResponseDTO;
+import org.sut.cashmachine.rest.dto.LoginRequestDTO;
+import org.sut.cashmachine.rest.dto.ProductDTO;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -40,21 +39,26 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ProductControllerTest {
     @Autowired
     MockMvc mockMvc;
+    @Autowired
+    Converter<ProductModel, ProductDTO> productConverter;
 
     ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
     public void testFindProducts() throws Exception {
         String token = authorize();
-        MvcResult result = mockMvc.perform(get("/api/products").header("Authorization", "Bearer " + token).contentType(MediaType.APPLICATION_JSON).param("query", "pet"))
+        MvcResult result = mockMvc
+                .perform(get("/api/products").header("Authorization", "Bearer " + token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("query", "pet"))
                 .andExpect(status().isOk())
                 .andReturn();
         String contentAsString = result.getResponse().getContentAsString();
-        List<ProductDto> dtos = objectMapper.readValue(contentAsString, new TypeReference<List<ProductDto>>(){});
-        assertEquals(2, dtos.size());
-        ProductConverter converter = new ProductConverter();
-        List<ProductDto> expected = List.of(ProductTestData.PRODUCT_0, ProductTestData.PRODUCT_1).stream().map(converter::convert).collect(Collectors.toList());
-        assertEquals(expected.toString(), dtos.toString());
+        List<ProductDTO> products = objectMapper.readValue(contentAsString, new TypeReference<List<ProductDTO>>() {
+        });
+        assertEquals(2, products.size());
+        List<ProductDTO> expected = List.of(ProductTestData.PRODUCT_0, ProductTestData.PRODUCT_1).stream().map(productConverter::convert).collect(Collectors.toList());
+        assertEquals(expected.toString(), products.toString());
     }
 
     private String authorize() throws Exception {
@@ -62,20 +66,15 @@ public class ProductControllerTest {
         MvcResult mvcResult = mockMvc.perform(post("/auth/login")
                 .contentType(MediaType.APPLICATION_JSON).content(content)).andExpect(status().isOk()).andReturn();
         String contentAsString = mvcResult.getResponse().getContentAsString();
-        return objectMapper.readValue(contentAsString, AuthResponse.class).getAccessToken();
+        return objectMapper.readValue(contentAsString, AuthResponseDTO.class).getAccessToken();
     }
 
 
     private String userJson() {
         try {
-            return objectMapper.writeValueAsString(new LoginRequest("iam@batman.com", "bat"));
+            return objectMapper.writeValueAsString(new LoginRequestDTO("iam@batman.com", "bat"));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @Test
-    public void getProductsByQuery() {
-
     }
 }

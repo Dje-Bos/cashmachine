@@ -3,14 +3,14 @@ package org.sut.cashmachine.rest.dto;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class ReceiptEntryDto {
+public class ReceiptEntryDTO {
     private long id;
     private String productCode;
     private String productName;
     private BigDecimal total;
     private BigDecimal quantity;
 
-    public ReceiptEntryDto() {
+    public ReceiptEntryDTO() {
     }
 
     public long getId() {
@@ -55,7 +55,7 @@ public class ReceiptEntryDto {
 
     @Override
     public String toString() {
-        return "ReceiptEntryDto{" +
+        return "ReceiptEntryDTO{" +
                 "id=" + id +
                 ", productCode='" + productCode + '\'' +
                 ", productName='" + productName + '\'' +
@@ -68,7 +68,7 @@ public class ReceiptEntryDto {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ReceiptEntryDto that = (ReceiptEntryDto) o;
+        ReceiptEntryDTO that = (ReceiptEntryDTO) o;
         return id == that.id &&
                 Objects.equals(productCode, that.productCode) &&
                 Objects.equals(productName, that.productName) &&
@@ -81,7 +81,7 @@ public class ReceiptEntryDto {
         return Objects.hash(id, productCode, productName, total, quantity);
     }
 
-    public ReceiptEntryDto(long id, String productCode, String productName, BigDecimal total, BigDecimal quantity) {
+    public ReceiptEntryDTO(long id, String productCode, String productName, BigDecimal total, BigDecimal quantity) {
         this.id = id;
         this.productCode = productCode;
         this.productName = productName;

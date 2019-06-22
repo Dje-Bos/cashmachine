@@ -2,10 +2,10 @@ package org.sut.cashmachine.rest.dto;
 
 import java.util.Map;
 
-public abstract class OAuth2UserInfo {
+public abstract class OAuth2UserInfoDTO {
     protected Map<String, Object> attributes;
 
-    public OAuth2UserInfo(Map<String, Object> attributes) {
+    public OAuth2UserInfoDTO(Map<String, Object> attributes) {
         this.attributes = attributes;
     }
 

@@ -2,7 +2,7 @@ package org.sut.cashmachine.rest.dto;
 
 import java.util.Objects;
 
-public class ProductDto {
+public class ProductDTO {
     private long id;
     private String code;
     private String name;
@@ -10,7 +10,7 @@ public class ProductDto {
 
     @Override
     public String toString() {
-        return "ProductDto{" +
+        return "ProductDTO{" +
                 "id=" + id +
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
@@ -54,7 +54,7 @@ public class ProductDto {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ProductDto that = (ProductDto) o;
+        ProductDTO that = (ProductDTO) o;
         return id == that.id &&
                 Double.compare(that.price, price) == 0 &&
                 Objects.equals(code, that.code) &&
@@ -66,10 +66,10 @@ public class ProductDto {
         return Objects.hash(id, code, name, price);
     }
 
-    public ProductDto() {
+    public ProductDTO() {
     }
 
-    public ProductDto(long id, String code, String name, double price) {
+    public ProductDTO(long id, String code, String name, double price) {
         this.id = id;
         this.code = code;
         this.name = name;

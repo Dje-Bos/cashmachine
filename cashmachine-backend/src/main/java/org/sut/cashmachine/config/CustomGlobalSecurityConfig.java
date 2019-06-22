@@ -24,7 +24,7 @@ import java.util.List;
 public class CustomGlobalSecurityConfig extends GlobalMethodSecurityConfiguration {
     @Override
     protected AccessDecisionManager accessDecisionManager() {
-        List<AccessDecisionVoter<? extends Object>> decisionVoters = new ArrayList<AccessDecisionVoter<? extends Object>>();
+        List<AccessDecisionVoter<?>> decisionVoters = new ArrayList<>();
         ExpressionBasedPreInvocationAdvice expressionAdvice = new ExpressionBasedPreInvocationAdvice();
         expressionAdvice.setExpressionHandler(getExpressionHandler());
          decisionVoters

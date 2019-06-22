@@ -1,10 +1,10 @@
 import {OrderEntry} from './OrderEntry';
 
-export interface Order {
+export class Order {
   creationTime: string;
   id: string;
   status: string;
-  total: string;
+  total: number;
   cashierName: string;
   entries: OrderEntry[];
 }

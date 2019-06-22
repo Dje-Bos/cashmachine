@@ -1,10 +1,10 @@
 package org.sut.cashmachine.rest.dto;
 
-public class Error {
+public class ErrorDTO {
     private String description;
     private String error;
 
-    public Error() {
+    public ErrorDTO() {
     }
 
     public String getDescription() {
@@ -23,7 +23,7 @@ public class Error {
         this.error = error;
     }
 
-    public Error(String description, String error) {
+    public ErrorDTO(String description, String error) {
         this.description = description;
         this.error = error;
     }
