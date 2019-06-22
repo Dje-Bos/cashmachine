@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.sut.cashmachine.dao.product.ProductRepository;
 import org.sut.cashmachine.model.product.ProductModel;
-import org.sut.cashmachine.rest.converter.ProductConverter;
-import org.sut.cashmachine.rest.dto.ProductDto;
+import org.sut.cashmachine.rest.converter.Converter;
+import org.sut.cashmachine.rest.dto.ProductDTO;
 
 import javax.validation.constraints.Size;
 import java.util.List;
@@ -20,18 +20,19 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/products")
 @Secured({"ADMIN","CASHIER","SENIOR_CASHIER", "MERCHANDISE"})
 public class ProductController {
-    private static final ProductConverter CONVERTER = new ProductConverter();
+    private Converter<ProductModel, ProductDTO> productConverter;
     private ProductRepository repository;
 
     @Autowired
-    public ProductController(ProductRepository repository) {
+    public ProductController(Converter<ProductModel, ProductDTO> productConverter, ProductRepository repository) {
+        this.productConverter = productConverter;
         this.repository = repository;
     }
 
     @GetMapping(params = {"query"})
-    public ResponseEntity<List<ProductDto>> getProductsByQuery(@RequestParam("query") @Size(min = 3, max = 20) String query) {
+    public ResponseEntity<List<ProductDTO>> getProductsByQuery(@RequestParam("query") @Size(min = 3, max = 20) String query) {
         List<ProductModel> productsByQuery = repository.findProductsByQuery(query);
-        List<ProductDto> dtos = productsByQuery.stream().map(CONVERTER::convert).collect(Collectors.toList());
-        return new ResponseEntity<>(dtos, HttpStatus.OK);
+        List<ProductDTO> products = productsByQuery.stream().map(productConverter::convert).collect(Collectors.toList());
+        return new ResponseEntity<>(products, HttpStatus.OK);
     }
 }

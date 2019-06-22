@@ -1,12 +1,10 @@
 package org.sut.cashmachine.rest.dto;
 
-import org.sut.cashmachine.rest.dto.OAuth2UserInfo;
-
 import java.util.Map;
 
-public class GoogleOAuth2UserInfo extends OAuth2UserInfo {
+public class GoogleOAuth2UserInfoDTO extends OAuth2UserInfoDTO {
 
-    public GoogleOAuth2UserInfo(Map<String, Object> attributes) {
+    public GoogleOAuth2UserInfoDTO(Map<String, Object> attributes) {
         super(attributes);
     }
 

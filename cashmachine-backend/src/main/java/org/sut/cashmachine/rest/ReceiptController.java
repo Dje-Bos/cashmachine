@@ -4,60 +4,49 @@ import org.hibernate.validator.constraints.Range;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import org.sut.cashmachine.dao.product.ProductRepository;
-import org.sut.cashmachine.dao.receipt.ReceiptEntryRepository;
-import org.sut.cashmachine.dao.receipt.DataJpaReceiptRepository;
 import org.sut.cashmachine.dao.receipt.ReceiptRepository;
-import org.sut.cashmachine.dao.user.UserRepository;
-import org.sut.cashmachine.model.order.ReceiptEntryModel;
 import org.sut.cashmachine.model.order.ReceiptModel;
-import org.sut.cashmachine.model.product.ProductModel;
-import org.sut.cashmachine.rest.converter.ReceiptConverter;
-import org.sut.cashmachine.rest.dto.CreateReceiptEntryRequest;
-import org.sut.cashmachine.rest.dto.Error;
-import org.sut.cashmachine.rest.dto.ReceiptDto;
-import org.sut.cashmachine.rest.dto.ReceiptPageableResponse;
+import org.sut.cashmachine.rest.converter.Converter;
+import org.sut.cashmachine.rest.dto.*;
 import org.sut.cashmachine.security.CurrentUser;
 import org.sut.cashmachine.security.UserPrincipal;
+import org.sut.cashmachine.service.receipt.ReceiptService;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Digits;
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static org.sut.cashmachine.constant.CashMachineConstants.EMPTY_STRING;
 
 @RestController
 @RequestMapping("/api/receipt")
-@Secured({"ADMIN","CASHIER","SENIOR_CASHIER"})
+@Secured({"ADMIN", "CASHIER", "SENIOR_CASHIER"})
 public class ReceiptController {
-    private static final ReceiptConverter CONVERTER = new ReceiptConverter();
+    private Converter<ReceiptModel, ReceiptDTO> receiptConverter;
     private ReceiptRepository receiptRepository;
-    private ProductRepository productRepository;
+    private ReceiptService receiptService;
 
     @Autowired
-    public ReceiptController(ReceiptRepository receiptRepository, ReceiptEntryRepository receiptEntryRepository, ProductRepository productRepository) {
+    public ReceiptController(Converter<ReceiptModel, ReceiptDTO> receiptConverter, ReceiptRepository receiptRepository, ReceiptService receiptService) {
+        this.receiptConverter = receiptConverter;
         this.receiptRepository = receiptRepository;
-        this.productRepository = productRepository;
+        this.receiptService = receiptService;
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ReceiptDto> getReceiptById(@PathVariable Long id) {
-        ResponseEntity<ReceiptDto> responseEntity;
+    @Transactional
+    public ResponseEntity<ReceiptDTO> getReceiptById(@PathVariable Long id) {
+        ResponseEntity<ReceiptDTO> responseEntity;
         ReceiptModel receipt = receiptRepository.getById(id);
         if (receipt != null) {
-            responseEntity = new ResponseEntity<>(CONVERTER.convert(receipt), HttpStatus.OK);
-        }
-        else {
+            responseEntity = new ResponseEntity<>(receiptConverter.convert(receipt), HttpStatus.OK);
+        } else {
             responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return responseEntity;
@@ -65,81 +54,37 @@ public class ReceiptController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<ReceiptDto> createNewReceipt(@CurrentUser UserPrincipal userPrincipal) {
-        return new ResponseEntity<>(CONVERTER.convert(receiptRepository.createNew(userPrincipal.getId())), HttpStatus.CREATED);
+    public ResponseEntity<ReceiptDTO> createNewReceipt(@CurrentUser UserPrincipal userPrincipal) {
+        return new ResponseEntity<>(receiptConverter.convert(receiptRepository.createNew(userPrincipal.getId())), HttpStatus.CREATED);
     }
 
     @GetMapping(params = {"page", "size"})
-    public ResponseEntity<ReceiptPageableResponse> getReceiptsWithPagination(@RequestParam("page") @Range(max = Integer.MAX_VALUE) int page, @RequestParam("size") @Range(max = 100) int size) {
+    public ResponseEntity<ReceiptPageableResponseDTO> getReceiptsWithPagination(@RequestParam("page") @Range(max = Integer.MAX_VALUE) int page, @RequestParam("size") @Range(max = 100) int size) {
         Page<ReceiptModel> receiptModelPage = receiptRepository.findAll(PageRequest.of(page, size, Sort.by("creationTime").descending()));
 
-        return new ResponseEntity<>(new ReceiptPageableResponse(receiptModelPage.getContent().stream().peek(e->e.setReceiptEnitities(null)).map(CONVERTER::convert).collect(Collectors.toList()), receiptModelPage.getTotalElements()), HttpStatus.OK);
+        return new ResponseEntity<>(new ReceiptPageableResponseDTO(receiptModelPage.getContent().stream().peek(e -> e.setReceiptEntities(null)).map(receiptConverter::convert).collect(Collectors.toList()), receiptModelPage.getTotalElements()), HttpStatus.OK);
     }
 
     @PostMapping("/{id}")
     @Transactional
-    public ResponseEntity addEntry(@RequestBody @Valid CreateReceiptEntryRequest request, @PathVariable("id") long receiptId) {
-        ReceiptModel receipt = receiptRepository.getWithEntries(receiptId);
-        if (receipt == null) {
-            return new ResponseEntity(new Error("Receipt with id " + receipt + " was not found", ""), HttpStatus.UNPROCESSABLE_ENTITY);
-        }
-        ProductModel product = productRepository.findProductByCode(request.getProductCode());
-        if (product == null) {
-            return new ResponseEntity(new Error("Product with code " + request.getProductCode() + " was not found", ""), HttpStatus.UNPROCESSABLE_ENTITY);
-        }
-        if (product.getInStock() < request.getQuantity()) {
-            return new ResponseEntity(new Error("Product with code " + request.getProductCode() + " stock count = " + product.getInStock() + " is not sufficient (requested + " + request.getQuantity()+")", ""), HttpStatus.UNPROCESSABLE_ENTITY);
-        }
-        if (receipt.getReceiptEnitities() == null) {
-            receipt.setReceiptEnitities(new HashSet<>());
-        }
-        if (receipt.getReceiptEnitities().stream().map(ReceiptEntryModel::getProduct).map(ProductModel::getId).anyMatch(id -> id.equals(product.getId()))) {
-            return new ResponseEntity(new Error("Product with code " + request.getProductCode() + " already exist in receipt", ""), HttpStatus.UNPROCESSABLE_ENTITY);
-        }
-        receipt.getReceiptEnitities().add(new ReceiptEntryModel(product, receipt, BigDecimal.valueOf(request.getQuantity()), BigDecimal.valueOf(request.getQuantity()).multiply(BigDecimal.valueOf(product.getPrice()))));
-        List<BigDecimal> totals = receipt.getReceiptEnitities().stream().map(ReceiptEntryModel::getTotal).collect(Collectors.toList());
-        BigDecimal newTotal = BigDecimal.ZERO;
-        for (BigDecimal total : totals) {
-            newTotal = newTotal.add(total);
-        }
-        receipt.setTotal(newTotal);
-        product.setInStock(product.getInStock() - request.getQuantity());
-        ReceiptModel saved = receiptRepository.save(receipt);
-        productRepository.save(product);
-        ReceiptDto dto = CONVERTER.convert(saved);
-        return new ResponseEntity(dto, HttpStatus.OK);
+    public ResponseEntity addEntry(@RequestBody @Valid CreateReceiptEntryRequestDTO request, @PathVariable("id") long receiptId) {
+        ReceiptEntryDTO receiptEntryDTO = new ReceiptEntryDTO();
+        receiptEntryDTO.setQuantity(BigDecimal.valueOf(request.getQuantity()));
+        receiptEntryDTO.setProductCode(request.getProductCode());
+        ReceiptModel receipt = receiptService.addProductToReceipt(receiptId, receiptEntryDTO);
+        ReceiptDTO dto = receiptConverter.convert(receipt);
+        return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity addEntry(@PathVariable("id") long receiptId, @RequestBody @Valid UpdateStatus status) {
+    public ResponseEntity updateReceiptStatus(@PathVariable("id") long receiptId, @RequestBody StatusDTO status) {
         ReceiptModel receipt = receiptRepository.getWithEntries(receiptId);
         if (receipt == null) {
-            return new ResponseEntity(new Error("Receipt with id " + receipt + " was not found", ""), HttpStatus.UNPROCESSABLE_ENTITY);
+            return new ResponseEntity<>(new ErrorDTO("Receipt with id " + receiptId + " was not found", EMPTY_STRING), HttpStatus.UNPROCESSABLE_ENTITY);
         }
         receipt.setStatus(status.getStatus());
         receiptRepository.save(receipt);
-        return new ResponseEntity(CONVERTER.convert(receipt), HttpStatus.OK);
+        return new ResponseEntity<>(receiptConverter.convert(receipt), HttpStatus.OK);
     }
-
-    private static class UpdateStatus {
-        private String status;
-
-        public String getStatus() {
-            return status;
-        }
-
-        public void setStatus(String status) {
-            this.status = status;
-        }
-
-        public UpdateStatus() {
-        }
-
-        public UpdateStatus(String status) {
-            this.status = status;
-        }
-    }
-
-
 }

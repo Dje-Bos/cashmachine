@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.sut.cashmachine.config.AppProperties;
 import org.sut.cashmachine.exception.BadRequestException;
-import org.sut.cashmachine.service.oauth.TokenProvider;
+import org.sut.cashmachine.service.oauth.impl.TokenProvider;
 import org.sut.cashmachine.util.CookieUtils;
 
 import javax.servlet.ServletException;
@@ -15,7 +15,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.URI;
 import java.util.Optional;
 

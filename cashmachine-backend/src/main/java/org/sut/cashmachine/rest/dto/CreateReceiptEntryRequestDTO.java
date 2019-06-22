@@ -4,13 +4,13 @@ import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotBlank;
 
-public class CreateReceiptEntryRequest {
+public class CreateReceiptEntryRequestDTO {
     @NotBlank
     private String productCode;
     @Range(min = 1, max = Integer.MAX_VALUE)
     private int quantity;
 
-    public CreateReceiptEntryRequest(@NotBlank String productCode, @Range(min = 1, max = Integer.MAX_VALUE) int quantity) {
+    public CreateReceiptEntryRequestDTO(@NotBlank String productCode, @Range(min = 1, max = Integer.MAX_VALUE) int quantity) {
         this.productCode = productCode;
         this.quantity = quantity;
     }
@@ -31,6 +31,6 @@ public class CreateReceiptEntryRequest {
         this.quantity = quantity;
     }
 
-    public CreateReceiptEntryRequest() {
+    public CreateReceiptEntryRequestDTO() {
     }
 }

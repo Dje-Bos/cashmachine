@@ -1,16 +1,11 @@
 package org.sut.cashmachine.model.order;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 import org.sut.cashmachine.model.user.UserModel;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
 @Entity
@@ -19,9 +14,6 @@ public class ReceiptModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-//    @Version
-//    private Long version;
 
     @Column(updatable = false, nullable = false, name = "creation_time")
     private OffsetDateTime creationTime;
@@ -126,19 +118,12 @@ public class ReceiptModel {
     public void setStatus(String status) {
         this.status = status;
     }
-//    public Long getVersion() {
-//        return version;
-//    }
-//
-//    public void setVersion(Long version) {
-//        this.version = version;
-//    }
 
-    public Set<ReceiptEntryModel> getReceiptEnitities() {
+    public Set<ReceiptEntryModel> getReceiptEntities() {
         return receiptEnitities;
     }
 
-    public void setReceiptEnitities(Set<ReceiptEntryModel> receiptEnitities) {
+    public void setReceiptEntities(Set<ReceiptEntryModel> receiptEnitities) {
         this.receiptEnitities = receiptEnitities;
     }
 }

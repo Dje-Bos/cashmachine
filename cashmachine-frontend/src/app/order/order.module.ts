@@ -6,7 +6,7 @@ import {OrderHomeComponent} from './order/order-home.component';
 import {OrderListComponent} from './orders-list/order-list.component';
 import {
   MatButtonModule,
-  MatFormFieldModule, MatInputModule,
+  MatFormFieldModule, MatIconModule, MatInputModule,
   MatPaginatorModule,
   MatProgressSpinnerModule,
   MatSortModule,
@@ -38,7 +38,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     MatFormFieldModule,
     MatInputModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatIconModule
   ]
 })
 export class OrderModule {

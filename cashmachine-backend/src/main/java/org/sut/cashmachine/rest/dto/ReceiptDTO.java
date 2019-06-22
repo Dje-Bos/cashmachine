@@ -1,24 +1,23 @@
 package org.sut.cashmachine.rest.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.sut.cashmachine.model.order.ReceiptEntryModel;
 
 import java.util.List;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ReceiptDto {
+public class ReceiptDTO {
     private long id;
     private String cashierName;
     private String status;
     private String total;
     private String creationTime;
-    private List<ReceiptEntryDto> entries;
+    private List<ReceiptEntryDTO> entries;
 
-    public ReceiptDto() {
+    public ReceiptDTO() {
     }
 
-    public ReceiptDto(long id, String cashierName, String status, String total, String creationTime, List<ReceiptEntryDto> entries) {
+    public ReceiptDTO(long id, String cashierName, String status, String total, String creationTime, List<ReceiptEntryDTO> entries) {
         this.id = id;
         this.cashierName = cashierName;
         this.status = status;
@@ -29,7 +28,7 @@ public class ReceiptDto {
 
     @Override
     public String toString() {
-        return "ReceiptDto{" +
+        return "ReceiptDTO{" +
                 "id=" + id +
                 ", cashierName='" + cashierName + '\'' +
                 ", status='" + status + '\'' +
@@ -43,7 +42,7 @@ public class ReceiptDto {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ReceiptDto that = (ReceiptDto) o;
+        ReceiptDTO that = (ReceiptDTO) o;
         return id == that.id &&
                 Objects.equals(cashierName, that.cashierName) &&
                 Objects.equals(status, that.status) &&
@@ -97,11 +96,11 @@ public class ReceiptDto {
         this.creationTime = creationTime;
     }
 
-    public List<ReceiptEntryDto> getEntries() {
+    public List<ReceiptEntryDTO> getEntries() {
         return entries;
     }
 
-    public void setEntries(List<ReceiptEntryDto> entries) {
+    public void setEntries(List<ReceiptEntryDTO> entries) {
         this.entries = entries;
     }
 }

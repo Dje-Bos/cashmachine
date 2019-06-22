@@ -1,13 +1,11 @@
 <div *ngIf="createdOrder">
   <div class="container">
-    <div class="row p-3">
-      <h3>Order creation #{{this.createdOrder.id}} Total is {{this.createdOrder.total}}</h3>
-    </div>
-  </div>
-  <div class="container">
     <form class="form-inline" [formGroup]="productSearchForm">
       <mat-form-field>
-        <input formControlName="code" (focusin)="setFocusOnSearch(true)" matInput placeholder="Search for product here">
+        <input formControlName="code" (focusin)="setFocusOnSearch(true)" matInput placeholder="Search for product here" >
+        <button mat-button *ngIf="productSearchForm.get('code').value" matSuffix mat-icon-button aria-label="Clear" (click)="productSearchForm.setValue({code : ''})">
+          <mat-icon>cancel</mat-icon>
+        </button>
       </mat-form-field>
       <button type="submit" hidden>hidden submit</button>
     </form>
@@ -22,6 +20,11 @@
     </div>
   </div>
   <mat-list role="list" class="container align-content-start p-3">
+    <div class="container">
+      <div class="row p-3">
+        <h3>Order creation #{{this.createdOrder.id}} Total is {{this.createdOrder.total}}</h3>
+      </div>
+    </div>
     <div class="row justify-content-around bg-primary">
       <div class="col text-center border-right border-left text-white">#</div>
       <div class="col text-center border-right border-left text-white">Product Name</div>
@@ -29,17 +32,18 @@
       <div class="col text-center border-right border-left text-white">Price</div>
     </div>
     <mat-list-item *ngFor="let entry of entries; let i = index" role="listitem" class="row justify-content-around">
-      <div class="col text-left border-right">{{entry.no}}</div>
+      <div class="col text-left border-right">{{i}}</div>
       <div class="col text-left border-right border-left">{{entry.productName}}</div>
       <div *ngIf="i+1 != entries.length" class="col text-left border-right border-left">{{entry.quantity}}</div>
       <div *ngIf="i+1 == entries.length" class="col text-left border-right border-left">
-        <form class="" (ngSubmit)="onQuantitySubmit()" [formGroup]="entryForm">
-          <input formControlName="quantity" placeholder="Quantity" value="{{entry.quantity}}" autofocus/>
-          <input formControlName="index" hidden value="{{i}}"/>
+        <form class="" (ngSubmit)="onQuantitySubmit(i)" [formGroup]="entryForm">
+          <label>
+            <input formControlName="quantity" placeholder="Quantity" value="{{entry.quantity}}" autofocus/>
+          </label>
           <button type="submit" hidden>hidden submit</button>
         </form>
       </div>
-      <div class="col text-left border-left">{{entry.price}}</div>
+      <div class="col text-left border-left">{{entry.total}}</div>
     </mat-list-item>
   </mat-list>
   <div class="container ">

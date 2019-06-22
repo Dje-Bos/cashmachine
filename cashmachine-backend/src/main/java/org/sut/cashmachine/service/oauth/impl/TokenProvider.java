@@ -1,4 +1,4 @@
-package org.sut.cashmachine.service.oauth;
+package org.sut.cashmachine.service.oauth.impl;
 
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;

@@ -3,33 +3,20 @@ package org.sut.cashmachine.dao.receipt;
 import data.ReceiptEntriesData;
 import data.ReceiptTestData;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.querydsl.QPageRequest;
-import org.springframework.data.querydsl.QSort;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 import org.sut.cashmachine.dao.user.DataJpaUserRepository;
-import org.sut.cashmachine.dao.user.UserRepository;
-import org.sut.cashmachine.dao.user.UserRepositoryImpl;
-import org.sut.cashmachine.dataload.test.data.RoleTestData;
-import org.sut.cashmachine.dataload.test.data.UserTestData;
 import org.sut.cashmachine.model.order.ReceiptEntryModel;
 import org.sut.cashmachine.model.order.ReceiptModel;
-import org.sut.cashmachine.model.user.AuthType;
-import org.sut.cashmachine.model.user.UserModel;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Set;
 
@@ -85,7 +72,7 @@ public class ReceiptRepositoryTest {
     public void testGetWithEntries() {
         ReceiptModel model = repository.getWithEntries(1L);
         Set<ReceiptEntryModel> expected = Set.of(ReceiptEntriesData.ENTRY_0, ReceiptEntriesData.ENTRY_1);
-        assertEquals(expected, model.getReceiptEnitities());
+        assertEquals(expected, model.getReceiptEntities());
     }
 
 }

@@ -1,12 +1,15 @@
 import {Component, OnInit} from '@angular/core';
 import {OrderEntry} from '../data/OrderEntry';
 import {FormControl, FormGroup} from '@angular/forms';
-import index from '@angular/cli/lib/cli';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Order} from '../data/Order';
 import {Product} from '../data/Product';
 import {ProductService} from '../product.service';
 import {OrderService} from '../order.service';
+import {MatIconRegistry} from '@angular/material';
+import {DomSanitizer} from '@angular/platform-browser';
+import {concat} from 'rxjs';
+import {skip} from 'rxjs/operators';
 
 
 @Component({
@@ -27,32 +30,29 @@ export class CreateNewComponent implements OnInit {
     code: new FormControl('')
   });
 
-  constructor(private orderService: OrderService, private route: ActivatedRoute, private productService: ProductService, private router: Router) {
-
+  constructor(private orderService: OrderService, private route: ActivatedRoute, private productService: ProductService,
+              private router: Router, iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
+    iconRegistry.addSvgIcon(
+      'cancel',
+      sanitizer.bypassSecurityTrustResourceUrl('assets/cancel.svg'));
   }
 
   ngOnInit() {
-    if (this.entries.length > 0) {
-      const orderEntry = this.entries[this.entries.length - 1];
-      this.entryForm.setValue(
-        {
-          quantity: orderEntry.quantity,
-          index: this.entries.length - 1
-        }
-      );
-    }
-    this.createdOrder = this.route.snapshot.data['createdOrder'];
+    this.createdOrder = this.route.snapshot.data.createdOrder;
     if (this.createdOrder.entries) {
       this.entries = this.createdOrder.entries;
     }
     this.onProductSearchFormChanges();
   }
 
-  onQuantitySubmit() {
+  onQuantitySubmit(i: number) {
     console.log('Quantity changed value = ' + this.entryForm.value.quantity);
-    let orderEntry = this.entries[this.entryForm.value.index];
+    const orderEntry = this.entries[i];
     orderEntry.quantity = this.entryForm.value.quantity;
-    this.orderService.updateEntryForOrder(this.createdOrder.id, orderEntry).subscribe(this.getOrder());
+    concat(this.orderService.updateEntry(orderEntry), this.orderService.getOrderWithId(this.createdOrder.id)).pipe(skip(1))
+      .subscribe((resp: Order)  => {
+          this.extractOrder(resp);
+      });
   }
 
   onProductSearchFormChanges() {
@@ -70,16 +70,20 @@ export class CreateNewComponent implements OnInit {
   addProductToOrder(code: string) {
     console.log('adding productCode ot order ' + code);
     this.setFocusOnSearch(false);
-    this.orderService.addProductToOrderWithQuantity(this.createdOrder.id, code, 1).subscribe(this.getOrder());
+    this.orderService.addProductToOrderWithQuantity(this.createdOrder.id, code, 1).subscribe(this.getOrderFunc());
   }
 
-  private getOrder() {
+  private getOrderFunc() {
     return (order: Order) => {
-      this.createdOrder = order;
-      if (order.entries) {
-        this.entries = order.entries;
-      }
+      this.extractOrder(order);
     };
+  }
+
+  private extractOrder(order: Order) {
+    this.createdOrder = order;
+    if (order.entries) {
+      this.entries = order.entries;
+    }
   }
 
   setFocusOnSearch(focusOnSearch: boolean) {
