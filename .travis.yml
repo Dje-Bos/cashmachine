@@ -4,4 +4,5 @@ jdk:
 branches:
   only:
     - develop
+    - master
 before_script: cd cashmachine-backend
