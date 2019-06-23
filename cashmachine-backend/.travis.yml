@@ -1,1 +1,5 @@
 language: java
+# safelist
+branches:
+  only:
+    - develop
