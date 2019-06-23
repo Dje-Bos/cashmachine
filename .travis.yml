@@ -1,5 +1,6 @@
 language: java
-# safelist
+jdk:
+  - oraclejdk11
 branches:
   only:
     - develop
