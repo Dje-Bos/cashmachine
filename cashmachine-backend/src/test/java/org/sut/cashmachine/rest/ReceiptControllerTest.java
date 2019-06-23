@@ -36,11 +36,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class ReceiptControllerTest {
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
     @Autowired
-    Converter<ReceiptModel, ReceiptDTO> receiptConverter;
+    private Converter<ReceiptModel, ReceiptDTO> receiptConverter;
 
-    ObjectMapper objectMapper = new ObjectMapper();
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
     public void getReceiptById() throws Exception {
@@ -74,7 +74,6 @@ public class ReceiptControllerTest {
         return objectMapper.readValue(contentAsString, AuthResponseDTO.class).getAccessToken();
     }
 
-
     private String userJson() {
         try {
             return objectMapper.writeValueAsString(new LoginRequestDTO("iam@batman.com", "bat"));
@@ -93,9 +92,7 @@ public class ReceiptControllerTest {
         ReceiptPageableResponseDTO receipts = objectMapper.readValue(contentAsString, ReceiptPageableResponseDTO.class);
 
         ReceiptPageableResponseDTO expected = new ReceiptPageableResponseDTO(List.of(receiptConverter.convert(ReceiptTestData.RECEIPT_1), receiptConverter.convert(ReceiptTestData.RECEIPT_0)), 4);
-        List<ReceiptDTO> collect = expected.getItems().stream().peek(e -> e.setEntries(null)).collect(Collectors.toList());
-        collect.get(0);
-        assertEquals(expected, receipts);
+        assertEquals(expected.toString(), receipts.toString());
 
     }
 
@@ -111,9 +108,6 @@ public class ReceiptControllerTest {
         assertEquals("2807.0", receipt.getTotal());
         assertEquals(3, receipt.getEntries().size());
         assertEquals(BigDecimal.valueOf(306.0), receipt.getEntries().get(2).getTotal());
-//        ReceiptPageableResponseDTO expected = new ReceiptPageableResponseDTO(List.of(receiptConverter.convert(ReceiptTestData.RECEIPT_1), receiptConverter.convert(ReceiptTestData.RECEIPT_0)), 4);
-//        assertEquals(expected, receipt);
-
     }
 
 }

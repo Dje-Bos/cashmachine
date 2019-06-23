@@ -10,7 +10,7 @@
     </parent>
     <groupId>org.sut</groupId>
     <artifactId>cash-machine-backend</artifactId>
-    <version>0.0.3+-RC</version>
+    <version>0.0.3-RC</version>
     <name>Cash Machine Backend</name>
     <description>Cash machine for SUT on Spring Boot</description>
 

@@ -38,6 +38,14 @@ public class ReceiptPageableResponseDTO {
     }
 
     @Override
+    public String toString() {
+        return "ReceiptPageableResponseDTO{" +
+                "items=" + items +
+                ", totalCount=" + totalCount +
+                '}';
+    }
+
+    @Override
     public int hashCode() {
         return Objects.hash(items, totalCount);
     }

@@ -75,7 +75,6 @@ public class DefaultUserRepositoryTest {
     }
 
     @Test
-    @Ignore
     public void shouldCreateReceiptEntry() {
         ProductModel product = productRepository.save(ProductTestData.PARSLEY);
         ReceiptModel receipt = receiptRepository.save(ReceiptTestData.FIRST_ADMIN_RECEIPT);
