@@ -3,3 +3,4 @@ language: java
 branches:
   only:
     - develop
+before_script: cd cashmachine-backend
