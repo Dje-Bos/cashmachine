@@ -34,7 +34,6 @@ public class ReceiptDTO {
                 ", status='" + status + '\'' +
                 ", total='" + total + '\'' +
                 ", creationTime='" + creationTime + '\'' +
-                ", entries=" + entries +
                 '}';
     }
 
