@@ -50,8 +50,8 @@ public class ReceiptControllerTest {
                 .andReturn();
         String contentAsString = result.getResponse().getContentAsString();
         ReceiptDTO receipt = objectMapper.readValue(contentAsString, ReceiptDTO.class);
-        ReceiptDTO convert = receiptConverter.convert(ReceiptTestData.RECEIPT_0);
-        assertEquals(convert.toString(), receipt.toString());
+        ReceiptDTO expected = receiptConverter.convert(ReceiptTestData.RECEIPT_0);
+        assertEquals(expected.toString(), receipt.toString());
     }
 
     @Test
