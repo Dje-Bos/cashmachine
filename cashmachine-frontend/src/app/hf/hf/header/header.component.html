@@ -9,15 +9,12 @@
         <img src="assets/cash-machine-icon.png" width="40" height="40" class="d-inline-block align-self-center" alt="">
         Cashmachine
       </a>
-      <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+      <ul class="navbar-nav mr-auto mt-2 mt-lg-0" *ngIf="this.authService.hasAnyRoles(['CASHIER', 'SENIOR_CASHIER'])">
         <li class="nav-item">
           <a class="nav-link" routerLink="/orders">Orders<span class="sr-only">(current)</span></a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="this.authService.hasRole('MERCHANDISE')">
           <a class="nav-link" routerLink="/products">Products</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/stocks" tabindex="-1">Stocks</a>
         </li>
       </ul>
       <div class="nav-item h-100 float-right">

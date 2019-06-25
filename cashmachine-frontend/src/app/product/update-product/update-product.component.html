@@ -1,0 +1,19 @@
+<div class="container p-3">
+  <button mat-icon-button color="primary" (click)="goBack()">Back</button>
+</div>
+<form *ngIf="product" class="container align-content-center p-3" [formGroup]="productForm">
+  <mat-form-field class="w-100">
+    <input matInput formControlName="code" placeholder="Code" readonly [(ngModel)]="product.code">
+  </mat-form-field>
+  <mat-checkbox formControlName="active" [(ngModel)]="product.active">Is active</mat-checkbox>
+  <mat-form-field class="w-100">
+    <input type="number" formControlName="stock" [(ngModel)]="product.stock" matInput placeholder="Stock level">
+  </mat-form-field>
+  <mat-form-field class="w-100">
+    <input type="number" formControlName="price" matInput placeholder="Price" [(ngModel)]="product.price">
+  </mat-form-field>
+  <mat-form-field class="w-100">
+    <input formControlName="name" matInput placeholder="Name" [(ngModel)]="product.name">
+  </mat-form-field>
+  <button mat-raised-button color="primary" type="submit" (click)="updateProduct()">Update</button>
+</form>

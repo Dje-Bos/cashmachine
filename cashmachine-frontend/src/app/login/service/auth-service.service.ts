@@ -30,8 +30,8 @@ export class AuthService {
   public signIn(email: string, password: string): Observable<Observable<boolean>> {
     return this.http.post('http://localhost:8888/cashmachine/auth/login', {email, password}).pipe(map(
       resp => {
-          return this.loginWithToken(resp['accessToken']);
-    })
+        return this.loginWithToken(resp['accessToken']);
+      })
     );
   }
 
@@ -65,6 +65,34 @@ export class AuthService {
 
   public isUserSignedIn(): boolean {
     return this.getToken() != null && this.getUser() !== undefined;
+  }
+
+ public  hasRole(role: string): boolean {
+    let user: UserProfile = JSON.parse(localStorage.getItem(AuthService.USER_STORAGE_KEY));
+    return user.roles.includes(role);
+  }
+
+  public hasRoles(roles: string[]): boolean {
+    let results: boolean[] = roles.map(value => {
+        return this.hasRole(value);
+      }
+    );
+    if (results.every(value => value === true)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  public hasAnyRoles(roles: string[]): boolean {
+    let results: boolean[] = roles.map(value => {
+        return this.hasRole(value);
+      }
+    );
+    if (results.find(value => value === true)) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   get authCallBackUri(): string {

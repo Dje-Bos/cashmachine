@@ -5,4 +5,5 @@ import org.sut.cashmachine.rest.dto.ReceiptEntryDTO;
 
 public interface ReceiptService {
     ReceiptModel addProductToReceipt(Long receiptId, ReceiptEntryDTO entry);
+    ReceiptModel cancelReceipt(Long receiptId);
 }

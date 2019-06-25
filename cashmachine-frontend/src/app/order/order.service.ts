@@ -40,4 +40,7 @@ export class OrderService {
   public updateOrderStatus(orderId: string, status: string): Observable<Order> {
     return this.http.put<Order>(`http://localhost:8888/cashmachine/api/receipt/${orderId}`, {status});
   }
+  public cancellOrder(orderId: string): Observable<Order> {
+    return this.http.put<Order>(`http://localhost:8888/cashmachine/api/receipt/cancel/${orderId}`, {});
+  }
 }

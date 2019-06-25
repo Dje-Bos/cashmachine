@@ -25,14 +25,14 @@ import {LoginRoutingModule} from './login/login-routing.module';
 import {OrderModule} from './order/order.module';
 import {JwtInterceptor} from './interceptor/jwt.interceptor';
 import {TokenExpirationInterceptor} from './interceptor/token-expiration.interceptor';
-import {HfModule} from './hf/hf/hf.module';
 import {StubComponent} from './stub/stub/stub.component';
+import {ProductModule} from './product/product.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     PageNotFoundComponent,
-    StubComponent
+    StubComponent,
   ],
   imports: [
     BrowserModule,
@@ -54,7 +54,7 @@ import {StubComponent} from './stub/stub/stub.component';
     LoginRoutingModule,
     OrderModule,
     AppRoutingModule,
-    HfModule
+    ProductModule
   ],
   providers : [{
     provide: HTTP_INTERCEPTORS,

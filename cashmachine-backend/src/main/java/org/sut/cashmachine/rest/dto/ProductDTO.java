@@ -7,6 +7,11 @@ public class ProductDTO {
     private String code;
     private String name;
     private double price;
+    private double stock;
+    private boolean active;
+
+    public ProductDTO() {
+    }
 
     @Override
     public String toString() {
@@ -15,6 +20,8 @@ public class ProductDTO {
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 ", price=" + price +
+                ", stock=" + stock +
+                ", active=" + active +
                 '}';
     }
 
@@ -50,6 +57,22 @@ public class ProductDTO {
         this.price = price;
     }
 
+    public double getStock() {
+        return stock;
+    }
+
+    public void setStock(double stock) {
+        this.stock = stock;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -64,15 +87,5 @@ public class ProductDTO {
     @Override
     public int hashCode() {
         return Objects.hash(id, code, name, price);
-    }
-
-    public ProductDTO() {
-    }
-
-    public ProductDTO(long id, String code, String name, double price) {
-        this.id = id;
-        this.code = code;
-        this.name = name;
-        this.price = price;
     }
 }

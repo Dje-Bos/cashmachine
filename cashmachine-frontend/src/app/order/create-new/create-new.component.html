@@ -2,7 +2,9 @@
   <div class="container">
     <form class="form-inline" [formGroup]="productSearchForm">
       <mat-form-field>
-        <input formControlName="code" (focusin)="setFocusOnSearch(true)" matInput placeholder="Search for product here" >
+        <label>
+          <input formControlName="code" (focusin)="setFocusOnSearch(true)" matInput placeholder="Search for product here" >
+        </label>
         <button mat-button *ngIf="productSearchForm.get('code').value" matSuffix mat-icon-button aria-label="Clear" (click)="productSearchForm.setValue({code : ''})">
           <mat-icon>cancel</mat-icon>
         </button>

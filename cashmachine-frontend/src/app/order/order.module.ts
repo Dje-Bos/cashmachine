@@ -17,6 +17,7 @@ import { CreateOrderComponent } from './create-order/create-order.component';
 import { CreateNewComponent } from './create-new/create-new.component';
 import {MatListModule} from '@angular/material/list';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { OrderDetailComponent } from './order-detail/order-detail.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     OrderListComponent,
     CreateOrderComponent,
     CreateNewComponent,
+    OrderDetailComponent,
   ],
   imports: [
     CommonModule,

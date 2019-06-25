@@ -89,9 +89,9 @@ public class ReceiptControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
         String contentAsString = result.getResponse().getContentAsString();
-        ReceiptPageableResponseDTO receipts = objectMapper.readValue(contentAsString, ReceiptPageableResponseDTO.class);
+        PaginationResponseDTO receipts = objectMapper.readValue(contentAsString, PaginationResponseDTO.class);
 
-        ReceiptPageableResponseDTO expected = new ReceiptPageableResponseDTO(List.of(receiptConverter.convert(ReceiptTestData.RECEIPT_1), receiptConverter.convert(ReceiptTestData.RECEIPT_0)), 4);
+        PaginationResponseDTO<ReceiptDTO> expected = new PaginationResponseDTO<>(List.of(receiptConverter.convert(ReceiptTestData.RECEIPT_1), receiptConverter.convert(ReceiptTestData.RECEIPT_0)), 4);
         assertEquals(expected.toString(), receipts.toString());
 
     }

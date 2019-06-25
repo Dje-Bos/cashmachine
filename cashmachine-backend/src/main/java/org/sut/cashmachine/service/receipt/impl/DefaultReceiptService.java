@@ -19,6 +19,8 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Optional;
 
+import static java.util.Optional.ofNullable;
+
 @Service
 public class DefaultReceiptService implements ReceiptService {
     private ReceiptRepository receiptRepository;
@@ -79,4 +81,22 @@ public class DefaultReceiptService implements ReceiptService {
         }
         receiptModel.getReceiptEntities().add(entry);
     }
+
+    @Override
+    @Transactional
+    public ReceiptModel cancelReceipt(Long receiptId) {
+        Objects.requireNonNull(receiptId);
+
+        ReceiptModel receipt = receiptRepository.getWithEntries(receiptId);
+        if (receipt == null) {
+            throw new UnknownIdentifierException(String.format("Cannot find receipt for id = '%s'", receiptId));
+        } else {
+            receipt.setStatus("CANCELLED");
+            ofNullable(receipt.getReceiptEntities()).orElseGet(HashSet::new).forEach(entry -> entry.setOrderQuantity(BigDecimal.ZERO));
+            calculationService.calculateReceipt(receipt);
+            receiptRepository.save(receipt);
+            return receipt;
+        }
+    }
+
 }

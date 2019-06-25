@@ -1,0 +1,20 @@
+<div class="container p-3">
+  <button mat-icon-button color="primary" (click)="goBack()">Back</button>
+</div>
+<form class="container align-content-center p-3" [formGroup]="productForm">
+  <mat-form-field class="w-100">
+    <input matInput formControlName="code" placeholder="Code" required>
+  </mat-form-field>
+  <mat-checkbox formControlName="active" [(ngModel)]="checked">Is active</mat-checkbox>
+  <mat-form-field class="w-100">
+    <input type="number" formControlName="stock" matInput placeholder="Stock level" required>
+  </mat-form-field>
+  <mat-form-field class="w-100">
+    <input type="number" formControlName="price" matInput placeholder="Price" required>
+  </mat-form-field>
+  <mat-form-field class="w-100">
+    <input formControlName="name" matInput placeholder="Name">
+  </mat-form-field>
+  <button mat-raised-button color="primary" type="submit" (click)="saveProduct()">Save</button>
+</form>
+

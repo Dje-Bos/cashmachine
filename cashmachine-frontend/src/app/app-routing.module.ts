@@ -10,6 +10,10 @@ const appRoutes: Routes = [
     loadChildren: () => import('./order/order.module').then(mod => mod.OrderModule),
   },
   {
+    path: 'products',
+    loadChildren: () => import('./product/product.module').then(mod => mod.ProductModule),
+  },
+  {
     path: '',
     component: StubComponent,
     canActivate: [RedirectGuard],
@@ -22,4 +26,5 @@ const appRoutes: Routes = [
   imports: [RouterModule.forRoot(appRoutes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}

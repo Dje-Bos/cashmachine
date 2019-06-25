@@ -57,7 +57,7 @@ export class CreateNewComponent implements OnInit {
 
   onProductSearchFormChanges() {
     this.productSearchForm.get('code').valueChanges.subscribe((value) => {
-      if (value.length >= 3) {
+      if (value.length >= 0) {
         this.productService.suggestProduct(value).subscribe((products: Product[]) => {
           this.suggestedProducts = products;
         });

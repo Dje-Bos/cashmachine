@@ -2,8 +2,6 @@ package org.sut.cashmachine.model.product;
 
 import javax.persistence.*;
 import java.time.OffsetDateTime;
-import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "products")
@@ -65,6 +63,9 @@ public class ProductModel {
         }
         if (this.isAllowedForPurchase == null) {
             this.isAllowedForPurchase = true;
+        }
+        if (this.unit == null) {
+            this.unit = "pieces";
         }
     }
 

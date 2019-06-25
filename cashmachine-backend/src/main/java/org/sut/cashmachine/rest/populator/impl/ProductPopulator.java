@@ -13,5 +13,7 @@ public class ProductPopulator implements Populator<ProductModel, ProductDTO> {
         target.setCode(source.getCode());
         target.setName(source.getName());
         target.setPrice(source.getPrice());
+        target.setActive(source.getAllowedForPurchase());
+        target.setStock(source.getInStock());
     }
 }

@@ -1,10 +1,11 @@
 import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
-import {merge, of as observableOf} from 'rxjs';
-import {catchError, map, startWith, switchMap} from 'rxjs/operators';
+import {concat, merge, of as observableOf} from 'rxjs';
+import {catchError, map, skip, startWith, switchMap} from 'rxjs/operators';
 import {OrderService} from '../order.service';
 import {Order} from '../data/Order';
+import {AuthService} from '../../login/service/auth-service.service';
 
 @Component({
   selector: 'app-orders',
@@ -16,7 +17,7 @@ import {Order} from '../data/Order';
  */
 export class OrderListComponent implements AfterViewInit {
 
-  displayedColumns: string[] = ['id', 'status', 'cashier', 'total', 'creationTime'];
+  displayedColumns: string[] = [];
   data: Order[] = [];
 
   resultsLength = 0;
@@ -27,7 +28,13 @@ export class OrderListComponent implements AfterViewInit {
   @ViewChild(MatSort)
   sort: MatSort;
 
-  constructor(private orderService: OrderService) {}
+  constructor(private orderService: OrderService, private authService: AuthService) {
+    if (authService.hasRole('SENIOR_CASHIER')) {
+      this.displayedColumns = ['id', 'status', 'cashier', 'total', 'creationTime', 'delete'];
+    } else {
+      this.displayedColumns = ['id', 'status', 'cashier', 'total', 'creationTime'];
+    }
+  }
 
   ngAfterViewInit() {
     // If the user changes the sort order, reset back to the first page.
@@ -37,6 +44,27 @@ export class OrderListComponent implements AfterViewInit {
       .pipe(
         startWith({}),
         switchMap(() => {
+          this.isLoadingResults = true;
+          return this.orderService.getOrders(
+            this.paginator.pageSize, this.paginator.pageIndex);
+        }),
+        map(data => {
+          // Flip flag to show that loading has finished.
+          this.isLoadingResults = false;
+          this.resultsLength = data.totalCount;
+          console.log('order items ' + data.items[0].status);
+          return data.items;
+        }),
+        catchError(() => {
+          this.isLoadingResults = false;
+          return observableOf([]);
+        })
+      ).subscribe(data => this.data = data);
+  }
+
+  cancelOrder(orderId: string) {
+    concat(this.orderService.cancellOrder(orderId), this.orderService.getOrders(this.paginator.pageSize, this.paginator.pageIndex))
+      .pipe(skip(1), switchMap(() => {
           this.isLoadingResults = true;
           return this.orderService.getOrders(
             this.paginator.pageSize, this.paginator.pageIndex);

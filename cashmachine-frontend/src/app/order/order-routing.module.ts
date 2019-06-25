@@ -9,7 +9,7 @@ import {NewOrderGuard} from './new-order.guard';
 
 const routes: Routes = [
   {
-    path: 'orders',
+    path: '',
     component: OrderHomeComponent,
     canActivate: [AuthGuard, AuthorizationGuard],
     data: {roles: ['CASHIER', 'SENIOR_CASHIER']},
@@ -17,14 +17,14 @@ const routes: Routes = [
       {
         path: 'checkout',
         component: CreateNewComponent,
-        resolve: { createdOrder: NewOrderGuard}
+        resolve: {createdOrder: NewOrderGuard}
       },
       {
         path: '',
         component: OrderListComponent,
         pathMatch: 'full'
       }
-      ]
+    ]
   }
 ];
 
@@ -32,4 +32,5 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class OrderRoutingModule { }
+export class OrderRoutingModule {
+}

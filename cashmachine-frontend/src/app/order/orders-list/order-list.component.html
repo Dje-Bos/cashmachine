@@ -43,6 +43,15 @@
           <mat-cell *matCellDef="let row">{{row.total}}</mat-cell>
         </ng-container>
 
+        <ng-container matColumnDef="delete">
+          <mat-header-cell *matHeaderCellDef>Cancel</mat-header-cell>
+          <mat-cell *matCellDef="let row">
+            <button mat-icon-button color="warn" (click)="cancelOrder(row.id)">
+              <mat-icon class="mat-18">cancel</mat-icon>
+            </button>
+          </mat-cell>
+        </ng-container>
+
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
       </mat-table>

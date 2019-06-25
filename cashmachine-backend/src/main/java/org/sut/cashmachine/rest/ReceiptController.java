@@ -59,10 +59,10 @@ public class ReceiptController {
     }
 
     @GetMapping(params = {"page", "size"})
-    public ResponseEntity<ReceiptPageableResponseDTO> getReceiptsWithPagination(@RequestParam("page") @Range(max = Integer.MAX_VALUE) int page, @RequestParam("size") @Range(max = 100) int size) {
+    public ResponseEntity<PaginationResponseDTO<ReceiptDTO>> getReceiptsWithPagination(@RequestParam("page") @Range(max = Integer.MAX_VALUE) int page, @RequestParam("size") @Range(max = 100) int size) {
         Page<ReceiptModel> receiptModelPage = receiptRepository.findAll(PageRequest.of(page, size, Sort.by("creationTime").descending()));
 
-        return new ResponseEntity<>(new ReceiptPageableResponseDTO(receiptModelPage.getContent().stream().peek(e -> e.setReceiptEntities(null)).map(receiptConverter::convert).collect(Collectors.toList()), receiptModelPage.getTotalElements()), HttpStatus.OK);
+        return new ResponseEntity<>(new PaginationResponseDTO<>(receiptModelPage.getContent().stream().peek(e -> e.setReceiptEntities(null)).map(receiptConverter::convert).collect(Collectors.toList()), receiptModelPage.getTotalElements()), HttpStatus.OK);
     }
 
     @PostMapping("/{id}")
@@ -86,5 +86,10 @@ public class ReceiptController {
         receipt.setStatus(status.getStatus());
         receiptRepository.save(receipt);
         return new ResponseEntity<>(receiptConverter.convert(receipt), HttpStatus.OK);
+    }
+
+    @PutMapping("/cancel/{id}")
+    public ResponseEntity cancelReceipt(@PathVariable("id") long receiptId) {
+        return new ResponseEntity<>(receiptConverter.convert(receiptService.cancelReceipt(receiptId)), HttpStatus.OK);
     }
 }
