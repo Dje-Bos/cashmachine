@@ -1,0 +1,21 @@
+<div class="container p-3" *ngIf="order">
+
+  <div class="row p-3 justify-content-center">
+    <div class="col-4"><h3>
+      Order #{{order.id}}|{{order.status}}|{{order.total}}
+    </h3>
+    </div>
+  </div>
+  <mat-list>
+    <mat-list-item *ngFor="let entry of order.entries">
+      <div class="col">{{entry.productName}}</div>
+      <div class="col">{{entry.quantity}}</div>
+      <div class="col">{{entry.total}}</div>
+      <div class="col">
+        <button mat-icon-button color="warn" (click)="cancelEntry(entry.id)">
+          <mat-icon class="mat-18">cancel</mat-icon>
+        </button>
+      </div>
+    </mat-list-item>
+  </mat-list>
+</div>

@@ -6,4 +6,5 @@ import java.math.BigDecimal;
 
 public interface ReceiptEntryService {
     ReceiptEntryModel updateReceiptEntryQuantity(Long entryId, BigDecimal newQuantity);
+    void cancelReceiptEntry(Long entryId);
 }

@@ -18,7 +18,7 @@
 
         <ng-container matColumnDef="id">
           <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
-          <mat-cell *matCellDef="let row">{{row.id}}</mat-cell>
+          <mat-cell *matCellDef="let row"><a routerLink="details/{{row.id}}">{{row.id}}</a></mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="creationTime">

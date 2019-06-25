@@ -43,4 +43,8 @@ export class OrderService {
   public cancellOrder(orderId: string): Observable<Order> {
     return this.http.put<Order>(`http://localhost:8888/cashmachine/api/receipt/cancel/${orderId}`, {});
   }
+
+  public cancelEntry(entryId: string): Observable<Order> {
+    return this.http.put<Order>(`http://localhost:8888/cashmachine/api/receipt-entries/cancel/${entryId}`, {});
+  }
 }

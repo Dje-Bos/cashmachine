@@ -35,4 +35,11 @@ public class ReceiptEntryController {
 
         return new ResponseEntity<>(receiptEntryConverter.convert(updatedReceiptEntry), HttpStatus.OK);
     }
+
+    @PutMapping("/cancel/{id}")
+    public ResponseEntity cancelEntryQuantityForReceipt(@PathVariable("id") @NotNull long receiptEntryId) {
+        receiptEntryService.cancelReceiptEntry(receiptEntryId);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

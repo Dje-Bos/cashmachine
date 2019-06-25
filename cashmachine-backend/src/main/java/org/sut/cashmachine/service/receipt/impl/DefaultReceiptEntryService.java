@@ -39,4 +39,17 @@ public class DefaultReceiptEntryService implements ReceiptEntryService {
 
         return receiptEntryRepository.save(receiptEntryForId);
     }
+
+    @Override
+    @Transactional
+    public void cancelReceiptEntry(Long entryId) {
+        Objects.requireNonNull(entryId);
+
+        ReceiptEntryModel receiptEntryForId = receiptEntryRepository.getOne(entryId);
+        receiptEntryForId.setOrderQuantity(BigDecimal.ZERO);
+        stockService.returnToStock(receiptEntryForId.getProduct(), receiptEntryForId.getOrderQuantity());
+        calculationService.calculateReceipt(receiptEntryForId.getReceipt());
+
+        receiptEntryRepository.save(receiptEntryForId);
+    }
 }
